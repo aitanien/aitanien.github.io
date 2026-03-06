@@ -1,0 +1,103 @@
+/* ─── Font ─────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Neue Montreal';
+  src: url('./fonts/NeueMontreal-Medium.otf') format('opentype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+/* ─── Reset ─────────────────────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ─── Base ──────────────────────────────────────────────── */
+body {
+  background-color: white;
+  width: 100vw;
+  height: 100vh;
+  font-family: 'Neue Montreal', sans-serif;
+  font-weight: 500;
+  font-size: 12px;
+  position: relative;
+}
+
+/* ─── Top grid ──────────────────────────────────────────── */
+.container {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 8px;
+  padding: 8px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+}
+
+.text {
+  grid-column: span 3;
+}
+
+/* ─── Bottom bar ────────────────────────────────────────── */
+.bottom-box {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+  right: 8px;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 8px;
+  align-items: start;
+  z-index: 1;
+}
+
+.text3 {
+  grid-column: 1 / span 3;
+}
+
+.text4 {
+  grid-column: 4 / span 4;
+}
+
+/* ─── Links ─────────────────────────────────────────────── */
+.custom-link,
+.custom-link:visited,
+.custom-link:hover,
+.custom-link:active {
+  color: black;
+  text-decoration: underline;
+}
+
+/* ─── Cursor trail ──────────────────────────────────────── */
+.trail-img {
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  pointer-events: none;
+  transform: translate(-50%, 0);
+  z-index: -1;
+}
+
+/* ─── Mobile ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .text {
+    grid-column: span 6;
+  }
+
+  .bottom-box {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    bottom: 8px;
+  }
+
+  .text3 {
+    grid-column: unset;
+  }
+
+  .text4 {
+    grid-column: unset;
+  }
+}

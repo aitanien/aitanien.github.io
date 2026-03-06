@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aitana Picó</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png" />
+  <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png" />
+
+  <!-- SEO -->
+  <meta name="description" content="Aitana Picó — digital designer, creative technologist + visual artist based in Madrid. UI design, branding, creative direction, AI visual workflows and mixed media illustration." />
+  <meta name="author" content="Aitana Picó" />
+
+  <!-- Open Graph (social sharing previews) -->
+  <meta property="og:title" content="Aitana Picó" />
+  <meta property="og:description" content="Digital designer, creative technologist + visual artist. Based in Madrid, available globally." />
+  <meta property="og:image" content="./og-image.png" />
+  <meta property="og:url" content="https://aitanapico.com" />
+  <meta property="og:type" content="website" />
+
+  <!-- Twitter/X card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Aitana Picó" />
+  <meta name="twitter:description" content="Digital designer, creative technologist + visual artist. Based in Madrid, available globally." />
+  <meta name="twitter:image" content="./og-image.png" />
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+
+  <div class="container">
+    <div class="text">Aitana Picó</div>
+    <div class="text">Based in Madrid, Available globally</div>
+  </div>
+
+  <div class="bottom-box">
+    <div class="text3">
+      <p>For project enquiries + full portfolio:</p>
+      <p><a href="mailto:hello@aitanapico.com" class="custom-link">hello@aitanapico.com</a></p>
+      <p>&nbsp;</p>
+      <p>☞ <a href="http://instagram.com/aitanapico/" class="custom-link">Instagram</a></p>
+      <p>☞ <a href="https://www.linkedin.com/in/aitanapico/" class="custom-link">Linkedin</a></p>
+      <p>&nbsp;</p>
+      <p>Based in Madrid · Available globally</p>
+    </div>
+    <div class="text4">
+      Aitana Picó is a digital designer, creative technologist + visual artist with experience in
+      UI design, branding, creative direction, AI visual workflows and mixed media illustration.
+      She creates dynamic visuals and curated design systems for clients worldwide, and is driven
+      by curiosity, experimentation and organising chaos.
+    </div>
+  </div>
+
+  <!-- Script moved here so HTML is valid -->
+  <script>
+    const images = [
+      './images/trail-1.png',
+      './images/trail-2.png',
+      './images/trail-3.png',
+      './images/trail-4.png',
+      './images/trail-5.png',
+      './images/trail-6.png',
+      './images/trail-7.png',
+      './images/trail-8.png',
+      './images/trail-9.png',
+      './images/trail-10.png',
+      './images/trail-11.png',
+      './images/trail-12.png',
+      './images/trail-13.png',
+      './images/trail-14.png',
+      './images/trail-15.png',
+      './images/trail-16.png',
+    ];
+
+    let lastUsedIndex = -1;
+    function getRandomIndex() {
+      let index;
+      do {
+        index = Math.floor(Math.random() * images.length);
+      } while (index === lastUsedIndex);
+      lastUsedIndex = index;
+      return index;
+    }
+
+    function placeImage(x, y) {
+      const img = document.createElement('img');
+      img.src = images[getRandomIndex()];
+      img.classList.add('trail-img');
+      img.style.left = x + 'px';
+      img.style.top = y + 'px';
+      document.body.appendChild(img);
+    }
+
+    const isMobile = () => window.matchMedia('(hover: none) and (pointer: coarse)').matches;
+
+    // ─── Desktop: cursor trail ───────────────────────────────
+    let lastX = null;
+    let lastY = null;
+    const spacing = 40;
+
+    document.addEventListener('mousemove', (e) => {
+      if (isMobile()) return;
+      const x = e.clientX;
+      const y = e.clientY;
+      if (lastX === null) {
+        lastX = x;
+        lastY = y;
+        placeImage(x, y);
+        return;
+      }
+      const dx = x - lastX;
+      const dy = y - lastY;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist >= spacing) {
+        placeImage(x, y);
+        lastX = x;
+        lastY = y;
+      }
+    });
+
+    // ─── Mobile: random placement ────────────────────────────
+    function spawnRandom() {
+      const x = Math.random() * window.innerWidth;
+      const y = Math.random() * window.innerHeight;
+      placeImage(x, y);
+    }
+
+    if (isMobile()) {
+      for (let i = 0; i < 8; i++) {
+        setTimeout(spawnRandom, i * 200);
+      }
+      setInterval(spawnRandom, 800);
+    }
+
+    document.addEventListener('click', () => {
+      document.querySelectorAll('.trail-img').forEach(img => img.remove());
+    });
+  </script>
+
+</body>
+</html>
