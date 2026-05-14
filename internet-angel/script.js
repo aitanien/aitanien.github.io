@@ -3,11 +3,14 @@
   var startButton = document.querySelector('[data-action="start"]');
   var form = document.getElementById("diagnostic-form");
   var zodiacSelect = document.getElementById("zodiac-sign");
+  var scanScreen = document.querySelector('[data-screen="scan"]');
   var video = document.getElementById("camera-feed");
   var fallback = document.getElementById("camera-fallback");
+  var scanCaption = document.getElementById("scan-caption");
   var resultScreen = document.querySelector('[data-screen="result"]');
   var stream = null;
   var scanTimer = null;
+  var captionTimer = null;
   var activeInputs = {
     screenName: "",
     zodiac: "",
@@ -65,6 +68,200 @@
     "static"
   ];
 
+  var wingArt = {
+    landing: `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠴⠒⢲
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠖⠉⠀⢀⡴⠋
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠴⠚⣁⠀⠀⣀⡴⠟⣪⠇
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠴⠚⣉⠤⢒⣩⠴⠒⠉⢁⡠⣚⢥⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣖⠪⠭⠈⣉⠽⣐⠮⢕⣊⡤⠤⠒⠋⢉⡤⠊⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠏⡰⢅⣖⡲⠾⠍⣩⢯⣒⣋⠥⢤⣒⠠⠤⠐⢛⡶⠂⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡏⠀⣹⢥⡗⠶⠌⣉⠯⠔⣒⣊⠩⠁⠀⣀⣠⣖⣏⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠁⣈⣷⡲⡏⠉⣙⡯⠭⠥⠒⠒⠊⠉⠉⠀⢀⡴⠃⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⡤⠚⡁⢠⡾⣟⣍⡎⠭⢖⣏⣉⡥⠤⠤⠤⠤⠴⠭⡅⠀⠀⠀⠀⠀
+⠀⠀⠀⡖⣺⠻⣏⣰⣄⣿⣟⡼⡿⣾⣞⣉⠿⠭⢐⣀⣀⣀⣀⣤⡴⠚⠁⠀⠀⠀⠀⠀
+⠀⠀⡼⣽⣟⡟⢿⢛⣎⡏⣾⢮⣟⣽⡷⡛⠧⢖⣒⣂⢀⣀⣀⠴⠃⠀⠀⠀⠀⠀⠀⠀
+⢀⣜⡗⣏⣹⡏⢻⣯⣻⢹⢱⣟⢼⢻⣳⡌⠑⠄⠑⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢸⣪⡎⡰⣫⢷⣻⢳⢻⠒⡿⡝⡍⣆⠱⠜⣶⠤⠄⡸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠘⠦⢞⡇⢪⠇⠘⣸⠀⡗⣧⢳⢸⠙⠦⠼⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠈⠧⠾⡄⣠⠋⢧⣠⠎⠣⡼⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`,
+    threshold: `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡠⠴⠒⢲
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡤⠖⠉⠀⢀⡴⠋
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠴⠚⣁⠀⠀⣀⡴⠟⣪⠇
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠴⠚⣉⠤⢒⣩⠴⠒⠉⢁⡠⣚⢥⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣖⠪⠭⠈⣉⠽⣐⠮⢕⣊⡤⠤⠒⠋⢉⡤⠊⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣴⠏⡰⢅⣖⡲⠾⠍⣩⢯⣒⣋⠥⢤⣒⠠⠤⠐⢛⡶⠂⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⡏⠀⣹⢥⡗⠶⠌⣉⠯⠔⣒⣊⠩⠁⠀⣀⣠⣖⣏⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⠁⣈⣷⡲⡏⠉⣙⡯⠭⠥⠒⠒⠊⠉⠉⠀⢀⡴⠃⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢀⡤⠚⡁⢠⡾⣟⣍⡎⠭⢖⣏⣉⡥⠤⠤⠤⠤⠴⠭⡅⠀⠀⠀⠀⠀
+⠀⠀⠀⡖⣺⠻⣏⣰⣄⣿⣟⡼⡿⣾⣞⣉⠿⠭⢐⣀⣀⣀⣀⣤⡴⠚⠁⠀⠀⠀⠀⠀
+⠀⠀⡼⣽⣟⡟⢿⢛⣎⡏⣾⢮⣟⣽⡷⡛⠧⢖⣒⣂⢀⣀⣀⠴⠃⠀⠀⠀⠀⠀⠀⠀
+⢀⣜⡗⣏⣹⡏⢻⣯⣻⢹⢱⣟⢼⢻⣳⡌⠑⠄⠑⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢸⣪⡎⡰⣫⢷⣻⢳⢻⠒⡿⡝⡍⣆⠱⠜⣶⠤⠄⡸⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠘⠦⢞⡇⢪⠇⠘⣸⠀⡗⣧⢳⢸⠙⠦⠼⠆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠈⠧⠾⡄⣠⠋⢧⣠⠎⠣⡼⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`,
+    archive: `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⣿⡁⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⢿⣿⣇⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢰⣿⢏⣿⣿⣿⡄⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⠋⣎⣾⣿⣿⣻⣆⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡾⠋⢁⣈⣼⣿⡛⣿⣿⣽⣆⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⡴⠞⠋⡄⢢⣽⣾⡟⠣⢘⡽⣿⣧⣿⡄
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⠶⠛⠁⠀⣀⢄⣿⣿⣿⡷⠈⡁⢮⣿⣿⣯⣿⠁
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⡴⠶⠋⠉⠀⠀⢀⣠⢶⣼⠿⠋⠉⣽⣿⣦⣝⣾⣿⣿⠿⠋⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣠⡤⠿⠛⠃⠀⠀⠀⠀⢀⣠⣿⠿⠛⠀⠀⠀⢀⣿⣿⣧⣿⣿⣿⡿⣤⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣤⠶⠚⠛⠉⠁⠀⠀⠀⢀⣀⣤⣶⠿⠛⠉⠁⠀⠀⠀⠀⠀⠠⣿⣿⡿⣡⢒⣿⣷⣿⣧⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⠴⠛⠋⠁⠀⠀⠀⢀⣠⣤⠤⠶⠚⠻⡏⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣽⣿⣿⠓⣤⢻⣿⣿⣾⡟⠀
+⠀⠀⠀⠀⠀⣠⡴⠞⠉⠀⠀⠀⢠⠠⠀⠒⠈⠉⠁⠀⠀⠀⠀⠀⢹⡄⠀⠀⠀⠀⠀⠀⠀⢀⣤⣿⣿⢏⠇⡺⣴⣿⣿⣷⡏⠀⠀
+⠀⠀⠀⣠⡾⠃⠀⠀⣀⡔⠛⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⡧⠀⠀⠀⣀⣤⠶⠞⠛⠙⣿⡗⣮⢾⣵⣿⣿⡟⠁⠀⠀⠀
+⠀⠀⣴⠏⠀⠀⣠⠞⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⣿⣥⣷⡶⠞⠋⠁⠀⠀⠀⢐⣿⡿⠋⠁⡴⣹⡾⣧⠀⠀⠀⠀
+⠀⣸⠇⠀⠀⣼⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⠀⣤⢾⡿⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⣾⣿⡑⢢⠘⣴⣿⣿⣿⠀⠀⠀⠀
+⢠⡿⠀⠀⣸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠀⠀⣻⡦⠀⠀⠀⠀⠀⠀⢀⣤⣾⠿⢁⠌⣦⣿⡿⣯⡿⠋⠀⠀⠀⠀
+⢸⡇⠀⠀⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡿⢃⣀⣤⣤⡤⠶⢾⣿⣫⡕⣤⢯⣾⣿⣴⡟⠋⠀⠀⠀⠀⠀⠀
+⢸⠁⠀⢸⣯⢀⡠⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣴⣿⡿⠿⠛⠉⠀⠀⠀⠀⣾⡿⢃⠉⠀⠐⢸⣷⢸⡇⠀⠀⠀⠀⠀⠀⠀
+⢸⠀⠀⠘⣷⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠂⠉⠈⠀⢹⣇⠀⠀⠀⠀⠀⢀⣰⣿⠏⡀⢎⡰⣜⣿⣟⣾⡇⠀⠀⠀⠀⠀⠀⠀
+⢸⡆⠀⢈⣿⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣼⡟⠠⣀⣠⣄⣶⣿⠟⣉⠶⣭⣷⡽⣟⣫⡾⠁⠀⠀⠀⠀⠀⠀⠀⠀
+⢸⡇⠀⠈⣿⡄⡠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣶⣿⠿⠞⠛⠛⠉⣿⡿⠎⠛⠘⢛⣿⢿⡛⠛⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠸⡇⠀⠀⣿⡝⠁⠀⠀⠀⠀⠀⠀⠀⠄⠐⠚⠙⠛⣿⡀⠀⠀⠀⠀⢠⣿⡇⡰⢀⢈⣯⣟⣾⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠈⣿⠀⠀⣿⣧⠀⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠆⡔⣠⢄⣶⣿⢿⣰⣽⣮⣿⢿⣽⠏⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢹⡇⠀⠹⣿⡆⠁⠀⠀⠀⠀⠀⠀⠀⠀⣀⣤⣾⠿⠿⠙⢿⣿⣿⣿⣾⣿⡽⠿⠚⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠈⣿⠀⠀⣿⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⡏⠀⠀⠀⠈⣽⣿⡆⢲⣿⣾⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⢹⡀⠀⣻⣿⡄⠀⠀⠀⠀⠀⠀⠀⢀⣿⢧⡀⣄⢠⣼⣿⣷⣸⣯⣿⣺⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⢸⡇⠀⣽⣿⢆⡲⣄⢠⡤⢶⡰⣬⣼⣟⣶⣽⣾⣿⣿⣳⣽⣿⢟⣱⠟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⢸⡇⠀⢸⣿⣿⠳⡟⢏⠛⠛⢻⡿⠛⠛⠉⣉⣿⣿⣟⣿⠵⠾⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢰⣼⠃⡀⢸⣿⣦⣓⠶⣈⠄⢀⣼⣿⣤⢴⣸⣶⡿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢸⡿⢰⡅⣻⣿⢷⢿⣻⡽⣾⣿⣿⣿⣾⠿⢟⣫⡿⠋⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢸⣷⢻⣼⣿⣿⣯⣿⣳⣿⣽⣿⣿⣟⢹⡟⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠻⣯⣿⡿⣿⢿⣿⣿⣿⢿⠿⣿⣷⠟⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀  ⠀⠉⠉⠙⠋⠋⠙⠉⠋⠉⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`,
+    signal: `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣴⡖⢶⣶⢦⣤⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣀⡤⢖⠲⠉⠀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡿⢻⠙⢭⠬⣯⣭⣟⡛⠯⡽⣿⣷⡶⠶⠶⢒⣩⠴⠏⠳⠭⠜⢄⠢⠈⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣸⢠⡸⣝⣂⠫⣕⠛⠞⢻⡙⠳⣀⠔⡰⠒⢧⣋⠦⣍⠏⣓⢂⢦⣀⠀⠀⠠⠀⠄⠠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⣿⣿⣇⢚⣧⠘⡬⠩⠍⠳⠒⢋⢄⡚⣐⢋⠲⣜⠲⣚⡚⡄⠂⠄⠠⠀⡄⠠⢀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢠⣿⣿⣶⣀⠀⠀⠀⠀⢠⣿⣿⣿⣿⣖⢯⣂⡱⣉⢭⡓⠭⣶⣘⡸⠥⢋⡏⣭⠫⣥⠩⣄⠩⠌⠤⡁⠄⠤⠀⠌⠐⠠⠈⠀⢀⠀⠀⠀⠀⠀⠀
+⢠⣿⠿⠟⢯⡻⠷⣲⣦⣴⣻⣿⣿⣿⣯⣯⣷⣽⡻⣝⣶⡈⠷⣆⡫⢝⡹⢳⡜⠰⠉⠦⡓⠬⠓⠬⢀⠑⠈⢂⠡⢀⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠸⡒⡾⣮⣿⣶⣜⢿⣿⣿⡿⣿⢻⡻⢿⣎⣟⣱⢮⡒⣽⡒⢥⠚⠦⣉⠧⣘⢣⠓⡄⢐⡐⢈⡐⠂⠌⢂⠄⡀⠂⠌⠠⠁⢂⠀⠀⠀⠈⠀⠀⠀
+⠀⠀⠀⠙⠏⢼⣻⠻⣟⣏⢿⡿⢟⡪⡛⢯⣝⣯⣝⠻⠿⣄⠛⠣⠌⣄⡂⠊⡔⢢⠉⡈⠒⠤⢃⡰⠈⡌⢠⠀⠂⠡⠐⡀⠀⠀⠀⠁⠀⠈⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢻⣇⣿⣽⣦⣛⢿⣽⣾⣦⣽⡎⡛⢿⣗⢶⣦⡙⢶⣀⢙⠳⣌⠂⠗⣬⠘⡐⢢⠡⣃⠜⠠⠒⠄⠂⠁⠄⡁⢂⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠷⠛⠹⣿⣯⠹⣾⣊⠿⣿⣿⣾⣄⠙⣿⣿⠹⣆⣻⣦⠀⡙⢦⡀⠘⡳⣔⣁⠌⢂⢩⢒⡉⠌⠁⠂⠀⠀⠂⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⣇⠙⢿⣦⠈⠻⠏⠛⠦⠈⠙⠃⠈⠉⢻⣾⣔⢆⠙⠳⣌⠱⢫⢦⡀⢢⠑⠌⡆⠡⠀⠀⠀⠀⠁⢂⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠙⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠻⢿⡆⠀⠈⠳⣌⡨⠉⠢⣄⠠⠈⠑⠂⠄⠁⠠⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠀⠀⠀⠈⠛⢦⡀⠸⣅⢆⠀⠀⠀⠈⠄⠡⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠀⢸⣎⢣⠀⠀⠀⠈⠠⢁⠠⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢨⢇⡈⠄⠀⠀⠀⠂⠐⡀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠜⣠⠀⠀⠀⠀⠐⠠⠁⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠀⠀⠀⠀⠀⠐⠠⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠄⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠠⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀`,
+    glitch: `⠀⠀⠀⣀⣴⣤⣤⣤⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢠⣿⡫⠅⠀⠀⠀⠚⣹⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢠⣿⠫⠀⠀⠀⠀⠀⠀⠀⠭⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢸⢸⠪⠁⠀⠀⠀⠀⠀⠀⠀⠘⢷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠘⡞⠸⠇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠚⠿⣧⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢹⡄⠆⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠋⢷⢦⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠙⣦⣃⡒⢀⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠹⠲⣆⣀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠈⠛⢿⣤⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠻⢟⣤⣀⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⣠⣼⠿⠿⠷⠾⠶⠀⠀⠄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠹⣖⡄⠀⠀
+⠀⠀⠀⣰⣿⠟⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠐⠀⠠⡀⠀⠀⠀⠀⠀⢌⢳⣄⠀
+⠀⠀⠀⣯⠁⠀⠀⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠁⠂⢀⢀⠀⠀⠂⢯⡆
+⠀⠀⠀⠹⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⡴⠚⠋⠉⠩⢶⡄⠈⡾⡍
+⠀⠀⠀⠀⠘⠓⢯⣷⡶⢧⣤⣴⣾⠇⠀⠀⠀⠀⠀⠀⣼⠀⢰⣢⡄⠀⣾⠇⠀⢻⣐
+⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⢩⠿⠉⠀⠀⠀⠀⠀⠀⢀⡿⣀⠀⠙⠛⠛⠁⠀⣠⢯⡞
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣹⢀⠀⢀⡀⠀⢀⢀⠀⣔⠍⢽⣶⣤⠠⢤⡐⣊⠵⠋⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠸⣄⠣⠟⠤⢧⠣⠛⠛⢠⣸⠜⠃⠀⠛⠛⠛⠃⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠓⠶⠶⠶⠶⠶⠛⠋⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`,
+    witness: `⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⣷⣦⡀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⣧⠙⢿⡄⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢹⡆⠈⣿⡄⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡇⠀⠁⣿⣄⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⠇⠀⢠⡇⠹⣆⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡟⠀⠀⢩⡇⠀⢹⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡼⠃⠀⢀⣼⠇⢠⣾⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢠⡾⠁⠀⠀⣹⡿⠀⠀⡿⢦⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣰⠟⠀⠀⠀⣾⣿⠁⢀⣼⠃⠘⡆
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣠⡾⢣⠀⢀⣠⣾⡿⠁⠀⣠⠏⠀⢰⡇
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⠞⠋⣰⡟⢀⣹⢿⣿⡇⠐⣺⣯⠇⠀⣸⢧
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⠖⠋⠁⠀⢸⡿⠛⠉⢿⡿⢋⣠⣾⡿⠋⢀⣴⠏⠈
+⠀⠀⠀⠀⠀⠀⠀⠀⣠⠶⠋⠀⠀⠀⣀⣴⠋⠀⢠⡇⣾⢋⣤⣿⡿⠁⢀⣽⠋⠀⡴
+⠀⠀⠀⠀⠀⠀⣴⠞⠁⠀⢀⣀⡴⣾⣽⡿⠀⠀⣾⡿⠛⠻⣿⡟⠀⣲⣿⡽⠡⢾⠃
+⠀⠀⠀⠀⠀⡾⠁⠀⠀⠘⠋⣝⣿⣻⠕⣂⣴⠞⠉⠀⣠⣿⠇⣠⢾⡿⠋⢀⣰⡏⠀
+⠀⠀⠀⠀⠀⣇⠀⠀⠀⠀⣀⣽⣿⣖⡿⣟⡋⠀⢀⣺⣷⢿⣻⣿⠉⢀⣩⠟⢹⠃⠀
+⠀⠀⠀⠀⠀⠙⢶⣄⠀⠀⠀⠀⣽⣿⣭⠥⠴⠖⠋⠉⣻⡿⢋⣁⣽⡟⠁⣠⠟⠀⠀
+⠀⠀⠀⠀⠀⠀⣠⡇⠀⠀⠰⣦⣾⣿⠭⠭⠁⢀⣬⣾⣿⣷⣿⠟⠋⠀⣺⡿⠀⠀⠀
+⠀⠀⠀⢀⡴⠞⠉⠀⠀⣄⠠⣼⣿⣖⡒⠲⠶⢾⣿⣿⡿⠉⠀⢠⣴⠾⠋⠀⠀⠀⠀
+⠀⠀⠀⣼⠀⠀⠀⣀⢀⢹⣿⣿⣿⣅⣀⠀⠀⠀⠘⣿⡔⠒⠋⠉⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⡼⠋⠀⢀⢀⢹⣾⣿⣿⢯⡋⠁⠉⠙⢶⣄⣻⡾⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⣠⠞⠁⠀⠀⣸⣾⣾⢿⢷⣍⠀⠙⢦⣀⣰⣼⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠙⠒⠋⠉⠉⠹⡍⠿⣇⠀⠹⡆⠀⣈⢿⠾⠛⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⢷⠢⢻⣔⣲⡿⢿⡽⠏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`,
+    echo: `⠀⠀⠀⠀⠀⠀⠀⢠⡄⠀⠀⢠⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢹⣿⣄⠀⠈⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢷⢽⢦⡀⢹⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠘⣯⠳⡙⢦⣿⣦⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⢿⡦⣄⣀⠀⠀⠀⠀⠀⠈⢷⡙⢦⡙⢿⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠈⠻⣮⡿⣿⢶⣤⣀⠀⠀⠀⠻⣄⠙⢦⡙⠿⣿⣦⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⢨⠻⣮⣝⠲⢌⣙⠒⠦⣤⣈⡳⣤⡉⠲⢬⡑⠿⣟⣷⢶⣤⣤⣄⣀⣤⣀⣀⣄⣀⣀⣀⣀⣀⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠻⣿⡷⣿⣿⣶⣬⣙⠲⢤⣀⡉⠙⠛⠳⢤⣈⡑⠲⠬⣍⣉⡒⠛⠛⠛⣿⠛⠛⠻⠭⣍⣉⣉⣛⣛⠻⠷⣶⣤⣄⣰⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠈⠻⣿⣗⠦⣍⡙⠛⠶⢦⣍⡙⠒⠦⢤⣄⣉⠓⠲⢦⢤⣭⡤⠶⠒⠚⢷⣦⣀⠀⠸⣧⡄⠀⠉⠙⠒⠀⠈⠙⠳⡿⣦⣀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢰⣶⣶⣽⣷⣦⣍⣑⠒⠤⢌⣉⣙⠒⠶⠤⢬⣹⣿⣄⢹⣇⡒⠒⠦⠤⡸⣧⡉⠛⠒⠈⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠙⣷⣤⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠉⠻⢾⣕⡺⠭⣙⣛⠲⠶⢦⣭⣍⣑⣒⠒⠒⠒⠂⠉⠉⢛⡖⠆⣀⣀⣈⣙⣶⠒⠒⠚⠀⠀⠀⠀⠀⢀⣠⣤⣀⣀⠀⠘⢿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠈⠙⢓⣶⣬⣍⣑⣒⣶⠶⠭⠭⠭⠉⠉⠉⠍⠭⠉⠙⠶⣥⣄⣀⣀⣩⣿⡓⠒⠀⠀⠀⠀⠀⢻⣁⣀⠀⠈⠙⢦⠈⣿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⢿⣭⣉⠉⢭⣉⡛⠛⠓⠒⠲⠶⠶⠶⠶⠖⠒⠒⣚⡩⠍⠉⢻⣍⣤⠀⠀⠀⠀⠀⠀⠀⢾⡉⠉⠛⠓⠀⠀⠈⣇⢸⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⢩⣻⣳⣶⣮⣭⣭⣍⣉⣉⣉⣉⣉⣉⣭⣭⠤⠴⠒⢋⡿⢋⠤⠔⠒⠊⠉⢀⡴⠚⠛⢛⠓⠶⠆⠀⠀⠀⢻⠈⣷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠿⣍⣧⡤⠭⣍⣉⣉⣉⣉⣀⣠⡤⠤⠴⠒⠊⣉⣨⠿⠒⠒⢶⣛⣀⣠⣞⣛⣶⠖⠲⠶⠀⠀⢀⡄⠀⠸⡦⣿⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠛⠛⡶⣶⣦⣤⣤⣿⡦⠤⠴⠖⠛⠋⣉⣀⠤⠔⣀⡤⢿⣛⡩⢤⣈⣻⡤⠶⠆⠀⠀⡞⠁⠀⠀⠉⢽⣇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠻⢯⣭⣓⣀⣤⣒⣒⣒⣾⣉⣉⣁⣤⡴⢚⡥⠖⢋⣥⠶⠚⡉⠉⢧⣤⣤⠀⠸⢿⡶⠃⠀⠀⠀⢻⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠉⠉⣽⣯⣭⡥⠴⢻⡟⠘⣉⣠⡾⢋⡤⠖⣭⡴⢖⠻⣯⡴⠗⠀⠀⣧⣠⡆⠀⠀⠀⠹⣷⣄⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠘⠛⢛⣿⣫⠖⠉⣰⠟⣡⠖⢉⣾⣏⣀⣠⢤⡄⠈⣿⣠⡗⢀⠀⠀⠀⠙⠻⣦⣄⡀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣾⣁⣱⣶⡞⣡⠞⣁⡴⢋⡴⢋⡿⢶⡟⠀⠀⠈⢻⣀⡿⠀⢀⡇⠀⠀⠀⠈⠙⠓⠶⢤⣄
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠉⠉⢠⡟⡝⣡⣾⢋⡴⠋⣴⠏⣠⠋⣿⠦⣶⠀⢈⠿⣧⢀⣾⣷⡀⢠⡀⠀⠀⠀⠀⠁⢸
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢸⡷⠚⣹⣣⢞⣷⣿⢇⡼⣡⣿⣵⢃⣾⡟⣹⢠⢸⢩⠘⡏⣳⡞⢧⣀⣿⣦⣷⢀⡞
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⣿⠷⠛⠁⣿⣿⡾⢛⣿⣡⢾⣹⢡⣿⡏⣾⣼⢠⣿⡇⣷⣀⣽⠀⢨⢉⡄⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠈⠁⠀⠀⠋⠁⢸⣷⠟⣿⣣⠟⣿⡾⣿⣷⡏⠛⠛⠶⠾⠾⠇⠀
+⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠙⠋⠀⠀⠀⠈⠉⠀⠀⠀⠀⠀⠀⠀⠀`,
+    vessel: `⠀⠀⠀⠀⠀⠀⠀⠀⠀⣀⣄⣠⣄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⠀⢠⣴⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⠀⣴⣿⡏⣿⣿⣿⣿⣿⡆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⢀⣾⡿⣽⣿⣿⣿⣏⢿⣿⣿⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢀⣾⣿⣡⣿⣿⣿⣿⣻⣽⣿⣿⣷⡀⠀⠀⠀⠀⠀⣀⠀⢠⡀⠀
+⠀⠀⠀⣾⠟⣱⢻⣿⡏⣿⣿⣿⡇⣿⣿⣿⣷⡀⠀⠀⠀⢀⣿⢀⣾⣇⠀
+⠀⠀⡰⡿⣎⣿⣼⣿⣷⢿⡟⣿⣿⣽⣿⣿⣿⣿⣆⠀⢀⣾⣿⣾⣿⣿⠀
+⠀⢸⣿⣿⢹⣿⣾⣿⣿⡼⣷⣿⣿⣿⡿⣽⣿⣿⣿⣿⣮⣿⣿⣻⣿⣏⣀
+⠀⡿⢱⣿⣿⣿⣿⣿⡗⣷⢻⣿⡿⣿⣿⣿⣷⣿⣻⠿⣿⣿⣿⣿⣿⣿⡟
+⠀⡼⣿⣯⣿⣿⣿⣿⡿⣿⢾⣿⣿⣷⣝⢿⣿⣿⣿⣿⣿⣶⣿⣯⣻⠟⠀
+⢸⣷⣿⣿⣿⣿⣿⣿⡿⣿⣾⣿⣿⣿⣿⣧⣿⣵⣿⣟⣿⣿⣟⣿⡿⠀⠀
+⣿⣹⣿⢻⣿⣿⢾⣿⡟⣿⣧⣿⡽⣿⡿⣿⡇⣿⣟⣿⣿⢿⣿⣷⠂⠀⠀
+⠏⣿⣏⣾⣿⣿⣼⣿⣷⣿⣿⣼⣷⣿⣇⣿⣷⣻⣿⣿⣿⡟⢿⠹⠆⠀⠀
+⠀⣿⢹⣿⣿⣿⡟⣿⣿⣿⣿⢸⣿⢹⣽⡾⣯⣿⢻⡟⣿⠁⠀⠀⠀⠀⠀
+⠀⡟⣿⣷⣿⣿⡇⢿⣿⣻⣿⢸⣿⡾⣿⡷⠙⠹⣇⠁⠈⠃⠀⠀⠀⠀⠀
+⠀⢛⣿⣿⢻⣿⡇⠸⣿⣟⣿⢸⣿⡇⢻⣷⠀⠀⠙⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢸⣿⡏⡘⣿⡇⣇⢹⣿⡜⡆⣿⣧⠈⢿⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢸⣿⢰⣧⢻⣇⣿⣆⢻⡇⣷⠸⣿⡀⠘⠃⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢸⣇⣿⣿⣯⠻⣿⣿⣤⡃⣿⡄⠹⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢸⠈⣿⣿⢽⣧⢿⣿⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠘⠀⣿⣿⢸⣿⡞⣿⣿⡞⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⢿⡿⣈⢿⣿⡹⣿⣿⡝⣿⣿⣆⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⡸⡇⣿⣏⢿⣷⡹⣿⣿⡌⠻⣿⣦⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⣿⣼⣿⢻⣯⡻⣷⣘⢿⣿⣆⠀⠙⠷⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⣿⣿⡇⢺⣿⣿⣮⣛⣿⣿⣿⣧⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⢰⣿⡿⠁⢸⣿⣿⡇⢿⣿⣿⡈⠻⢷⡄⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⢀⣾⡟⠁⠀⣹⣿⣿⡇⢸⣿⣿⡇⠀⠀⠙⠂⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠉⠁⠀⠀⠀⣿⣿⡿⠀⢸⣿⣿⡇⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⢰⣿⣿⠃⠀⢸⣿⣿⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠀⣾⡿⠃⠀⠀⢸⣿⡏⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⣰⠟⠁⠀⠀⠀⢸⡟⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀
+⠀⠀⠀⠀⠉⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀`,
+    static: `⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣤⣤⣤⣤⣶⡶⠶⡴⣦⣶⡶⠶⠞⢻⣿⠇
+⠀⠀⠀⠀⠀⠀⣠⣶⠟⠉⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⣠⣖⡟⠁
+⠀⠀⠀⠀⢀⡾⠏⠁⠀⠀⠀⠀⠀⠀⠀⠀⠀⣤⣤⣴⣾⣿⡥⡆⠀⠀
+⠀⠀⠀⢠⡿⠁⠀⢠⣄⣄⡀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⢀⡾⠀⠀
+⠀⠀⠀⣿⠃⣠⠋⣁⠀⠀⢙⠆⠀⠀⠀⠀⠀⢤⣴⣶⣛⠋⠁⠀⠀⠀
+⠀⠀⣼⢣⠎⠀⣼⠋⠀⢀⢪⠃⠀⠀⠀⠀⠀⠀⠀⠈⠹⡾⡄⠀⠀⠀
+⠀⣰⡿⠇⠀⠀⠸⣟⠷⡋⣁⢀⣀⢄⢤⢄⣄⣤⣤⣶⣿⠃⠀⠀⠀⠀
+⣰⣿⣿⣦⣷⠿⠶⠓⠛⠛⠛⠛⠛⠛⠋⠉⠉⠁⠙⠉⠀⠀⠀⠀⠀⠀`
+  };
+
   var angelData = {
     threshold: {
       name: "The Threshold Angel",
@@ -73,6 +270,7 @@
       reading: "You exist at the edge of things. You are the 3am thought, the unsent message, the tab left open for six months. You feel like you are always arriving, but never quite landing. People feel changed after talking to you but can't explain why.",
       frequency: "Liminal Frequency",
       hz: "396 hz",
+      wingSize: "5.1px",
       sigil: [
         "   /\\",
         "--<  >--",
@@ -80,16 +278,7 @@
         "   ||",
         "  /__\\"
       ].join("\n"),
-      wing: [
-        "        . . . . . . . . . . . . .",
-        "      . . . . . . . . . . . . .",
-        "    . . . . . . . . . . . . .",
-        "  . . . . . . . . . . . .",
-        ". . . . . . . . . . .",
-        "  . . . . . . . . .",
-        "    . . . . . .",
-        "       . . ."
-      ].join("\n")
+      wing: wingArt.threshold
     },
     archive: {
       name: "The Archive Angel",
@@ -98,6 +287,7 @@
       reading: "You remember everything. You are the keeper of screenshots, the one who finds the article from 2011, the one who never forgets what someone said. Your aura carries the weight of accumulated knowledge. This is a gift. (It is also exhausting).",
       frequency: "Memory Frequency",
       hz: "741 hz",
+      wingSize: "2.6px",
       sigil: [
         "[====]",
         "| /\\ |",
@@ -105,15 +295,7 @@
         "[====]",
         "  ||"
       ].join("\n"),
-      wing: [
-        "||||||||||||||||",
-        " |||||||||||||",
-        "  ||||||||||",
-        "   |||||||",
-        "    ||||",
-        "   |||||||",
-        "  ||||||||||"
-      ].join("\n")
+      wing: wingArt.archive
     },
     signal: {
       name: "The Signal Angel",
@@ -122,6 +304,7 @@
       reading: "You are always transmitting. Something about you reaches people before you do \u2014 your reputation, your energy, your taste \u2014 you don't need to try to be perceived. The frequency you operate on is simply louder than most.",
       frequency: "Transmission Frequency",
       hz: "528 hz",
+      wingSize: "2.9px",
       sigil: [
         "  /\\",
         " /--\\",
@@ -129,15 +312,7 @@
         " \\--/",
         "  \\/"
       ].join("\n"),
-      wing: [
-        "        .-.-.-.-.-.-.",
-        "      .-.-.-.-.-.",
-        "    .-.-.-.-.",
-        "  .-.-.-.",
-        ".-.-.",
-        "  .-.-.-.",
-        "    .-.-.-.-."
-      ].join("\n")
+      wing: wingArt.signal
     },
     glitch: {
       name: "The Glitch Angel",
@@ -146,6 +321,7 @@
       reading: "You don't quite fit the pattern. Systems malfunction around you. Plans change. Things that should work don't, and things that shouldn't do. You are not broken, you are running on a different version of reality than everyone else.",
       frequency: "Interference Frequency",
       hz: "417 hz",
+      wingSize: "5.15px",
       sigil: [
         "|\\/|",
         "|/\\|__",
@@ -153,15 +329,7 @@
         "|/  \\|",
         "--  --"
       ].join("\n"),
-      wing: [
-        "   .. .. .. .. ..",
-        " .. .. ..   .. .. ..",
-        ".. ..   .. ..",
-        "  .. .. .. .. .. ..",
-        "     .. ..   ..",
-        " .. .. .. ..",
-        "   .. .."
-      ].join("\n")
+      wing: wingArt.glitch
     },
     witness: {
       name: "The Witness Angel",
@@ -170,6 +338,7 @@
       reading: "You see everything. You are the observer, the one in the corner who notices, the one who remembers the details nobody else caught. You carry other people's stories inside you like a library. You are more powerful than you look.",
       frequency: "Clarity Frequency",
       hz: "852 hz",
+      wingSize: "3.7px",
       sigil: [
         " .---.",
         "/  o  \\",
@@ -177,15 +346,7 @@
         "\\  o  /",
         " '---'"
       ].join("\n"),
-      wing: [
-        "      o o o o o o o",
-        "    o o o o o o",
-        "  o o o o o",
-        "o o o o",
-        "  o o o o o",
-        "    o o o o o o",
-        "      o o o o o o o"
-      ].join("\n")
+      wing: wingArt.witness
     },
     echo: {
       name: "The Echo Angel",
@@ -194,6 +355,7 @@
       reading: "You leave traces everywhere. Long after you've left a room, a conversation, a relationship, something of you remains. You shape the people who encounter you in ways that take years to fully understand. Your influence is quiet and permanent.",
       frequency: "Resonance Frequency",
       hz: "639 hz",
+      wingSize: "1.95px",
       sigil: [
         "((  ))",
         " (())",
@@ -201,15 +363,7 @@
         " (())",
         "((  ))"
       ].join("\n"),
-      wing: [
-        "        ((((((((",
-        "      (((((((",
-        "    ((((((",
-        "  ((((",
-        "(((",
-        "  ((((",
-        "    (((((("
-      ].join("\n")
+      wing: wingArt.echo
     },
     vessel: {
       name: "The Vessel Angel",
@@ -218,6 +372,7 @@
       reading: "You hold things for other people. Emotions, secrets, energy \u2014 people hand it to you without asking and you carry it without complaint. You are a container. Learning what to put down is your life's work.",
       frequency: "Holding Frequency",
       hz: "174 hz",
+      wingSize: "3.0px",
       sigil: [
         "\\    /",
         " \\  /",
@@ -225,15 +380,7 @@
         " |__|",
         " \\__/"
       ].join("\n"),
-      wing: [
-        "      [........]",
-        "    [........]",
-        "  [......]",
-        "[....]",
-        "  [......]",
-        "    [........]",
-        "      [........]"
-      ].join("\n")
+      wing: wingArt.vessel
     },
     static: {
       name: "The Static Angel",
@@ -242,6 +389,7 @@
       reading: "You are between frequencies. Not lost, searching. Your aura is the hum of something that hasn't quite resolved yet. You are in the middle of becoming something and the signal is not yet clear. This is not a bad thing.",
       frequency: "Becoming Frequency",
       hz: "963 hz",
+      wingSize: "7.7px",
       sigil: [
         "/\\/\\//",
         "\\//\\/",
@@ -249,15 +397,7 @@
         "/\\/\\//",
         "\\//\\/"
       ].join("\n"),
-      wing: [
-        ". . . . . . . .",
-        " . x . . x . . .",
-        ". . . x . . x .",
-        "  x . . . . .",
-        ". . x . . x . .",
-        " . . . x . .",
-        "   . . ."
-      ].join("\n")
+      wing: wingArt.static
     }
   };
 
@@ -267,45 +407,9 @@
     });
   }
 
-  function mirrorWing(wing) {
-    return wing
-      .split("\n")
-      .map(function (line) {
-        return line
-          .split("")
-          .reverse()
-          .map(function (character) {
-            var swap = {
-              "/": "\\",
-              "\\": "/",
-              "(": ")",
-              ")": "(",
-              "[": "]",
-              "]": "[",
-              "<": ">",
-              ">": "<"
-            };
-            return swap[character] || character;
-          })
-          .join("");
-      })
-      .join("\n");
-  }
-
   function setLandingWings() {
-    var landingWing = [
-      "        . . . . . . . . . . . . . . . .",
-      "      . . . . . . . . . . . . . . .",
-      "    . . . . . . . . . . . . . .",
-      "  . . . . . . . . . . . .",
-      ". . . . . . . . . .",
-      "  . . . . . . . .",
-      "    . . . . .",
-      "      . . ."
-    ].join("\n");
-
-    document.querySelector(".landing-wing-left").textContent = landingWing;
-    document.querySelector(".landing-wing-right").textContent = mirrorWing(landingWing);
+    document.querySelector(".landing-wing-left").textContent = wingArt.landing;
+    document.querySelector(".landing-wing-right").textContent = wingArt.landing;
   }
 
   function readUsedProphecies() {
@@ -378,6 +482,7 @@
 
     resultScreen.style.setProperty("--angel-bg", angel.bg);
     resultScreen.style.setProperty("--angel-text", angel.text);
+    resultScreen.style.setProperty("--wing-size", angel.wingSize);
 
     document.getElementById("angel-name").textContent = angel.name;
     document.getElementById("angel-index").textContent = "aura type " + String(index).padStart(2, "0") + " of 08";
@@ -387,7 +492,35 @@
     document.getElementById("frequency-hz").textContent = angel.hz;
     document.getElementById("frequency-name").textContent = angel.frequency;
     document.getElementById("result-wing-left").textContent = angel.wing;
-    document.getElementById("result-wing-right").textContent = mirrorWing(angel.wing);
+    document.getElementById("result-wing-right").textContent = angel.wing;
+  }
+
+  function stopCaptionLoop() {
+    clearInterval(captionTimer);
+    captionTimer = null;
+  }
+
+  function typeCaption(message) {
+    var index = 0;
+    var hold = 0;
+
+    stopCaptionLoop();
+    scanCaption.textContent = "";
+
+    captionTimer = window.setInterval(function () {
+      if (index <= message.length) {
+        scanCaption.textContent = message.slice(0, index);
+        index += 1;
+        return;
+      }
+
+      hold += 1;
+      if (hold > 9) {
+        index = 0;
+        hold = 0;
+        scanCaption.textContent = "";
+      }
+    }, 85);
   }
 
   function stopCamera() {
@@ -403,14 +536,30 @@
   }
 
   function finishScan() {
+    stopCaptionLoop();
     stopCamera();
+    scanScreen.classList.remove("is-scanning");
     renderResult();
     showScreen("result");
   }
 
+  function beginScanAnimation() {
+    if (scanScreen.classList.contains("is-scanning")) {
+      return;
+    }
+
+    scanScreen.classList.add("is-scanning");
+    typeCaption("Scan in process...");
+    scanTimer = window.setTimeout(finishScan, 6400);
+  }
+
   function startScan() {
     clearTimeout(scanTimer);
+    stopCaptionLoop();
+    scanScreen.classList.remove("is-scanning");
     fallback.hidden = true;
+    video.hidden = false;
+    typeCaption("Awaiting camera signal...");
     showScreen("scan");
 
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -418,16 +567,27 @@
         .getUserMedia({ video: { facingMode: "user" }, audio: false })
         .then(function (cameraStream) {
           stream = cameraStream;
+          video.onloadedmetadata = beginScanAnimation;
+          video.oncanplay = beginScanAnimation;
           video.srcObject = cameraStream;
+
+          var playPromise = video.play();
+          if (playPromise && playPromise.then) {
+            playPromise.then(beginScanAnimation).catch(function () {
+              beginScanAnimation();
+            });
+          }
         })
         .catch(function () {
           fallback.hidden = false;
+          video.hidden = true;
+          beginScanAnimation();
         });
     } else {
       fallback.hidden = false;
+      video.hidden = true;
+      beginScanAnimation();
     }
-
-    scanTimer = window.setTimeout(finishScan, 4300);
   }
 
   startButton.addEventListener("click", function () {

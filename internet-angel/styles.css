@@ -1,11 +1,6 @@
 @font-face {
   font-family: "Panchi Mono";
-  src:
-    url("./fonts/PanchiMono.woff2") format("woff2"),
-    url("./fonts/Panchi Mono.woff2") format("woff2"),
-    url("./fonts/panchi-mono.woff2") format("woff2"),
-    url("./fonts/PanchiMono.woff") format("woff"),
-    url("./fonts/PanchiMono.ttf") format("truetype");
+  src: url("./fonts/Panchi Mono.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -13,12 +8,7 @@
 
 @font-face {
   font-family: "Neue Montreal";
-  src:
-    url("./fonts/NeueMontreal.woff2") format("woff2"),
-    url("./fonts/Neue Montreal.woff2") format("woff2"),
-    url("./fonts/neue-montreal.woff2") format("woff2"),
-    url("./fonts/NeueMontreal.woff") format("woff"),
-    url("./fonts/NeueMontreal.ttf") format("truetype");
+  src: url("./fonts/NeueMontreal-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -26,12 +16,7 @@
 
 @font-face {
   font-family: "Snap It Mono";
-  src:
-    url("./fonts/SnapItMono.woff2") format("woff2"),
-    url("./fonts/Snap it mono.woff2") format("woff2"),
-    url("./fonts/snap-it-mono.woff2") format("woff2"),
-    url("./fonts/SnapItMono.woff") format("woff"),
-    url("./fonts/SnapItMono.ttf") format("truetype");
+  src: url("./fonts/Snap-itmono-1.6-Regular.otf") format("opentype");
   font-weight: 400;
   font-style: normal;
   font-display: swap;
@@ -89,6 +74,7 @@ button {
 
 .screen.is-active {
   display: flex;
+  animation: screenArrive 520ms ease both;
 }
 
 .visually-hidden {
@@ -120,12 +106,15 @@ button {
   min-width: 186px;
   padding: 0 14px;
   text-align: center;
+  transition: background-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
 }
 
 .angel-button:hover,
 .angel-button:focus-visible {
   background: var(--button);
+  box-shadow: 0 0 12px rgba(93, 255, 248, 0.45);
   outline: none;
+  transform: translateY(-1px);
 }
 
 /* Landing */
@@ -145,6 +134,7 @@ button {
 }
 
 .landing-copy {
+  animation: copyFloat 7s ease-in-out infinite;
   margin-top: 5px;
   text-align: center;
   width: 210px;
@@ -169,23 +159,28 @@ button {
 }
 
 .landing-wing {
+  animation: wingBreath 6.6s ease-in-out infinite;
   font-family: "Panchi Mono", "Courier New", monospace;
-  font-size: 7px;
-  letter-spacing: 1px;
-  line-height: 0.75;
+  font-size: var(--landing-wing-size, 5.3px);
+  letter-spacing: 0;
+  line-height: 0.82;
   margin: 0;
   pointer-events: none;
   position: absolute;
-  top: calc(50% - 48px);
+  top: calc(50% - 65px);
+  transform: scaleX(var(--wing-direction, 1)) scale(var(--wing-scale, 1));
+  transform-origin: center;
   white-space: pre;
 }
 
 .landing-wing-left {
   left: 15px;
+  --wing-direction: 1;
 }
 
 .landing-wing-right {
   right: 15px;
+  --wing-direction: -1;
 }
 
 /* Form */
@@ -196,6 +191,7 @@ button {
 }
 
 .diagnostic-form {
+  animation: formDrift 640ms ease both;
   margin-top: 4px;
   text-align: left;
   width: 186px;
@@ -223,7 +219,15 @@ button {
   height: 25px;
   margin: 0 0 11px;
   padding: 0 7px;
+  transition: border-color 180ms ease, box-shadow 180ms ease;
   width: 100%;
+}
+
+.diagnostic-form input:focus,
+.diagnostic-form select:focus {
+  border-color: #5dfff8;
+  box-shadow: 0 0 9px rgba(93, 255, 248, 0.42);
+  outline: none;
 }
 
 .diagnostic-form select {
@@ -271,6 +275,7 @@ button {
 
 .scan-beam {
   animation: beamPulse 2.4s ease-in-out infinite;
+  animation-play-state: paused;
   background: var(--scan);
   box-shadow: 0 0 8px var(--scan), 0 0 20px rgba(93, 255, 248, 0.75);
   height: 2px;
@@ -279,6 +284,10 @@ button {
   top: calc(50% - 135px);
   transform: translateX(-50%);
   width: min(420px, 56vw);
+}
+
+.screen-scan.is-scanning .scan-beam {
+  animation-play-state: running;
 }
 
 .scan-beam::before,
@@ -304,11 +313,18 @@ button {
 
 .camera-frame {
   background: #d8fbfb;
+  box-shadow: 0 0 0 rgba(93, 255, 248, 0);
   height: 209px;
   margin-top: -2px;
   overflow: hidden;
   position: relative;
+  transition: box-shadow 520ms ease, filter 520ms ease;
   width: 342px;
+}
+
+.screen-scan.is-scanning .camera-frame {
+  animation: frameBreathe 3.2s ease-in-out infinite;
+  box-shadow: 0 0 22px rgba(93, 255, 248, 0.34);
 }
 
 .camera-frame video,
@@ -341,13 +357,18 @@ button {
   display: none;
 }
 
+.camera-frame video[hidden] {
+  display: none;
+}
+
 .scan-overlay {
   inset: 0;
   position: absolute;
 }
 
 .scan-line {
-  animation: scanSweep 2.3s linear infinite;
+  animation: scanSweep 2.7s linear infinite;
+  animation-play-state: paused;
   background: rgba(93, 255, 248, 0.72);
   box-shadow: 0 0 14px var(--scan);
   height: 2px;
@@ -357,13 +378,22 @@ button {
   top: 0;
 }
 
+.screen-scan.is-scanning .scan-line {
+  animation-play-state: running;
+}
+
 .corner {
   border-color: var(--scan);
   border-style: solid;
   height: 22px;
-  opacity: 0.9;
+  opacity: 0;
   position: absolute;
+  transition: opacity 420ms ease;
   width: 22px;
+}
+
+.screen-scan.is-scanning .corner {
+  opacity: 0.9;
 }
 
 .corner-tl {
@@ -391,8 +421,17 @@ button {
 }
 
 .scan-caption {
+  min-height: 13px;
   font-style: italic;
   margin: 49px 0 0;
+  position: relative;
+}
+
+.screen-scan.is-scanning .scan-caption::after {
+  animation: caretBlink 900ms steps(1) infinite;
+  content: "";
+  border-right: 1px solid currentColor;
+  margin-left: 2px;
 }
 
 /* Result */
@@ -405,6 +444,7 @@ button {
 }
 
 .result-card {
+  animation: resultMaterialize 900ms ease both;
   margin-top: -2px;
   width: 185px;
   z-index: 1;
@@ -485,28 +525,31 @@ button {
 }
 
 .result-wing {
-  animation: wingBreath 4.8s ease-in-out infinite;
+  animation: wingBreath 6.8s ease-in-out infinite;
   color: inherit;
   font-family: "Panchi Mono", "Courier New", monospace;
-  font-size: 6px;
-  letter-spacing: 1px;
-  line-height: 0.78;
+  font-size: var(--wing-size, 5px);
+  letter-spacing: 0;
+  line-height: var(--wing-line-height, 0.82);
   margin: 0;
-  max-width: 32vw;
+  max-width: 38vw;
   opacity: 0.95;
   pointer-events: none;
   position: absolute;
-  top: calc(50% - 75px);
+  top: 50%;
+  transform: translateY(-50%) scaleX(var(--wing-direction, 1)) scale(var(--wing-scale, 1));
   transform-origin: center;
   white-space: pre;
 }
 
 .result-wing-left {
   left: 17px;
+  --wing-direction: 1;
 }
 
 .result-wing-right {
   right: 17px;
+  --wing-direction: -1;
 }
 
 @keyframes scanSweep {
@@ -528,15 +571,77 @@ button {
   }
 }
 
+@keyframes screenArrive {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes copyFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}
+
+@keyframes formDrift {
+  from {
+    opacity: 0;
+    transform: translateY(3px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes frameBreathe {
+  0%,
+  100% {
+    filter: saturate(1);
+  }
+  50% {
+    filter: saturate(1.08) brightness(1.03);
+  }
+}
+
+@keyframes resultMaterialize {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes caretBlink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
 @keyframes wingBreath {
   0%,
   100% {
-    opacity: 0.74;
-    transform: scale(0.985);
+    letter-spacing: 0;
+    opacity: 0.72;
   }
   50% {
+    letter-spacing: 0.16px;
     opacity: 1;
-    transform: scale(1.015);
   }
 }
 
@@ -546,8 +651,8 @@ button {
   }
 
   .landing-wing {
-    font-size: 5px;
-    top: calc(50% - 114px);
+    font-size: 3.4px;
+    top: calc(50% - 118px);
   }
 
   .landing-wing-left {
@@ -584,7 +689,7 @@ button {
   }
 
   .result-wing {
-    font-size: 4px;
+    font-size: calc(var(--wing-size, 5px) * 0.58);
     top: 51%;
   }
 
