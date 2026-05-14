@@ -30,6 +30,9 @@
   --button-border: #777777;
   --input-border: #a8a8a8;
   --scan: #5dfff8;
+  --center-width: 370px;
+  --body-size: 16px;
+  --heading-size: 36px;
 }
 
 * {
@@ -46,9 +49,9 @@ body {
 body {
   background: var(--paper);
   color: var(--ink);
-  font-family: "Panchi Mono", "Courier New", monospace;
-  font-size: 12px;
-  line-height: 1.1;
+  font-family: "Neue Montreal", Arial, sans-serif;
+  font-size: var(--body-size);
+  line-height: 1.5;
 }
 
 button,
@@ -59,6 +62,14 @@ select {
 
 button {
   cursor: pointer;
+}
+
+h1,
+h2 {
+  font-family: "Snap It Mono", "Courier New", monospace;
+  font-size: var(--heading-size);
+  font-weight: 400;
+  line-height: 1.1;
 }
 
 .app {
@@ -88,10 +99,10 @@ button {
 }
 
 .technical-label {
-  font-family: "Neue Montreal", Arial, sans-serif;
-  font-size: 9px;
+  font-family: "Panchi Mono", "Courier New", monospace;
+  font-size: var(--body-size);
   letter-spacing: 0.035em;
-  line-height: 1;
+  line-height: 1.5;
   margin: 0;
   text-transform: uppercase;
 }
@@ -102,9 +113,12 @@ button {
   border: 1px solid var(--button-border);
   border-radius: 0;
   color: var(--ink);
-  height: 24px;
-  min-width: 186px;
-  padding: 0 14px;
+  font-family: "Panchi Mono", "Courier New", monospace;
+  font-size: var(--body-size);
+  line-height: 1.5;
+  min-height: 48px;
+  min-width: 100%;
+  padding: 0 16px;
   text-align: center;
   transition: background-color 220ms ease, box-shadow 220ms ease, transform 220ms ease;
 }
@@ -130,57 +144,67 @@ button {
       var(--paper) calc(50% + 151px),
       var(--paper) 100%
     );
-  justify-content: center;
+  grid-template-columns: minmax(0, 1fr) var(--center-width) minmax(0, 1fr);
+  justify-content: stretch;
+  width: 100%;
+}
+
+.screen-landing.is-active {
+  display: grid;
 }
 
 .landing-copy {
   animation: copyFloat 7s ease-in-out infinite;
   margin-top: 5px;
+  grid-column: 2;
   text-align: center;
-  width: 210px;
+  width: var(--center-width);
   z-index: 1;
 }
 
 .landing-copy h1 {
   font-family: "Snap It Mono", "Courier New", monospace;
-  font-size: clamp(28px, 4.15vw, 33px);
+  font-size: var(--heading-size);
   font-weight: 400;
   letter-spacing: -0.08em;
-  line-height: 0.82;
-  margin: 0 0 15px;
+  line-height: 1.1;
+  margin: 0 0 24px;
 }
 
 .landing-copy p {
   font-family: "Neue Montreal", Arial, sans-serif;
-  font-size: 8px;
+  font-size: var(--body-size);
   letter-spacing: 0.01em;
-  line-height: 1.08;
-  margin: 0 0 14px;
+  line-height: 1.5;
+  margin: 0 0 24px;
 }
 
 .landing-wing {
   animation: wingBreath 6.6s ease-in-out infinite;
   font-family: "Panchi Mono", "Courier New", monospace;
-  font-size: var(--landing-wing-size, 5.3px);
+  font-size: var(--body-size);
   letter-spacing: 0;
-  line-height: 0.82;
+  line-height: 1.1;
   margin: 0;
+  max-width: 100%;
+  overflow: hidden;
   pointer-events: none;
-  position: absolute;
-  top: calc(50% - 65px);
-  transform: scaleX(var(--wing-direction, 1)) scale(var(--wing-scale, 1));
+  position: static;
+  transform: scaleX(var(--wing-direction, 1));
   transform-origin: center;
   white-space: pre;
 }
 
 .landing-wing-left {
-  left: 15px;
-  --wing-direction: 1;
+  --wing-direction: -1;
+  grid-column: 1;
+  justify-self: end;
 }
 
 .landing-wing-right {
-  right: 15px;
-  --wing-direction: -1;
+  --wing-direction: 1;
+  grid-column: 3;
+  justify-self: start;
 }
 
 /* Form */
@@ -188,21 +212,22 @@ button {
   align-items: center;
   background: var(--paper);
   justify-content: center;
+  padding: 0;
 }
 
 .diagnostic-form {
   animation: formDrift 640ms ease both;
   margin-top: 4px;
   text-align: left;
-  width: 186px;
+  width: var(--center-width);
 }
 
 .form-intro {
   font-family: "Neue Montreal", Arial, sans-serif;
-  font-size: 8px;
+  font-size: var(--body-size);
   letter-spacing: 0.015em;
-  line-height: 1.12;
-  margin: 0 0 20px;
+  line-height: 1.5;
+  margin: 0 0 24px;
   text-align: center;
 }
 
@@ -215,10 +240,11 @@ button {
   color: var(--ink);
   display: block;
   font-family: "Neue Montreal", Arial, sans-serif;
-  font-size: 9px;
-  height: 25px;
-  margin: 0 0 11px;
-  padding: 0 7px;
+  font-size: var(--body-size);
+  height: 48px;
+  line-height: 1.5;
+  margin: 0 0 16px;
+  padding: 0 12px;
   transition: border-color 180ms ease, box-shadow 180ms ease;
   width: 100%;
 }
@@ -235,10 +261,10 @@ button {
     linear-gradient(45deg, transparent 50%, #777 50%),
     linear-gradient(135deg, #777 50%, transparent 50%);
   background-position:
-    calc(100% - 12px) 11px,
-    calc(100% - 8px) 11px;
+    calc(100% - 18px) 21px,
+    calc(100% - 12px) 21px;
   background-repeat: no-repeat;
-  background-size: 4px 4px, 4px 4px;
+  background-size: 6px 6px, 6px 6px;
   color: #8b8b8b;
 }
 
@@ -253,11 +279,11 @@ button {
 
 .form-note {
   font-family: "Neue Montreal", Arial, sans-serif;
-  font-size: 6px;
+  font-size: var(--body-size);
   font-style: italic;
   letter-spacing: -0.01em;
-  line-height: 1;
-  margin: -5px 0 29px;
+  line-height: 1.5;
+  margin: -8px 0 32px;
 }
 
 .form-button {
@@ -281,9 +307,9 @@ button {
   height: 2px;
   left: 50%;
   position: absolute;
-  top: calc(50% - 135px);
+  top: calc(50% - 170px);
   transform: translateX(-50%);
-  width: min(420px, 56vw);
+  width: var(--center-width);
 }
 
 .screen-scan.is-scanning .scan-beam {
@@ -314,12 +340,12 @@ button {
 .camera-frame {
   background: #d8fbfb;
   box-shadow: 0 0 0 rgba(93, 255, 248, 0);
-  height: 209px;
+  height: 226px;
   margin-top: -2px;
   overflow: hidden;
   position: relative;
   transition: box-shadow 520ms ease, filter 520ms ease;
-  width: 342px;
+  width: var(--center-width);
 }
 
 .screen-scan.is-scanning .camera-frame {
@@ -344,9 +370,10 @@ button {
   color: #333333;
   display: flex;
   font-family: "Neue Montreal", Arial, sans-serif;
-  font-size: 9px;
+  font-size: var(--body-size);
   justify-content: center;
   letter-spacing: 0.03em;
+  line-height: 1.5;
   inset: 0;
   position: absolute;
   text-transform: uppercase;
@@ -421,8 +448,11 @@ button {
 }
 
 .scan-caption {
-  min-height: 13px;
+  font-family: "Neue Montreal", Arial, sans-serif;
+  font-size: var(--body-size);
   font-style: italic;
+  line-height: 1.5;
+  min-height: 24px;
   margin: 49px 0 0;
   position: relative;
 }
@@ -439,29 +469,35 @@ button {
   align-items: center;
   background: var(--angel-bg, #9b72f2);
   color: var(--angel-text, #e1f572);
-  justify-content: center;
+  grid-template-columns: minmax(0, 1fr) var(--center-width) minmax(0, 1fr);
+  justify-content: stretch;
   transition: background-color 300ms ease, color 300ms ease;
+  width: 100%;
+}
+
+.screen-result.is-active {
+  display: grid;
 }
 
 .result-card {
   animation: resultMaterialize 900ms ease both;
+  grid-column: 2;
   margin-top: -2px;
-  width: 185px;
+  width: var(--center-width);
   z-index: 1;
 }
 
 .result-card h2 {
   font-family: "Snap It Mono", "Courier New", monospace;
-  font-size: 18px;
+  font-size: var(--heading-size);
   font-weight: 400;
   letter-spacing: -0.045em;
-  line-height: 1;
-  margin: 14px 0 6px;
+  line-height: 1.1;
+  margin: 24px 0 8px;
   text-align: center;
 }
 
 .angel-index {
-  font-size: 7px;
   text-align: center;
 }
 
@@ -472,31 +508,31 @@ button {
 .reading-block p:last-child,
 #prophecy {
   font-family: "Neue Montreal", Arial, sans-serif;
-  font-size: 8px;
+  font-size: var(--body-size);
   letter-spacing: -0.01em;
-  line-height: 1.03;
-  margin: 7px 0 0;
+  line-height: 1.5;
+  margin: 8px 0 0;
 }
 
 .result-columns {
   display: grid;
-  gap: 19px;
-  grid-template-columns: 72px 1fr;
-  margin-top: 25px;
+  gap: 24px;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 32px;
 }
 
 .sigil {
   color: inherit;
   font-family: "Panchi Mono", "Courier New", monospace;
-  font-size: 8px;
+  font-size: var(--body-size);
   letter-spacing: 1px;
-  line-height: 0.82;
-  margin: 9px 0 0;
+  line-height: 1.5;
+  margin: 8px 0 0;
   white-space: pre;
 }
 
 .frequency-block {
-  margin-top: 29px;
+  margin-top: 32px;
 }
 
 .frequency-row {
@@ -507,20 +543,21 @@ button {
 }
 
 .note {
-  font-size: 21px;
-  line-height: 0.8;
+  font-size: var(--body-size);
+  line-height: 1.5;
 }
 
 #frequency-hz {
-  font-family: "Snap It Mono", "Courier New", monospace;
-  font-size: 16px;
-  line-height: 0.9;
+  font-family: "Neue Montreal", Arial, sans-serif;
+  font-size: var(--body-size);
+  line-height: 1.5;
   margin: 0 0 3px;
 }
 
 #frequency-name {
   font-family: "Neue Montreal", Arial, sans-serif;
-  font-size: 7px;
+  font-size: var(--body-size);
+  line-height: 1.5;
   margin: 0;
 }
 
@@ -528,28 +565,30 @@ button {
   animation: wingBreath 6.8s ease-in-out infinite;
   color: inherit;
   font-family: "Panchi Mono", "Courier New", monospace;
-  font-size: var(--wing-size, 5px);
+  font-size: var(--body-size);
   letter-spacing: 0;
-  line-height: var(--wing-line-height, 0.82);
+  line-height: 1.1;
   margin: 0;
-  max-width: 38vw;
+  max-width: 100%;
   opacity: 0.95;
+  overflow: hidden;
   pointer-events: none;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%) scaleX(var(--wing-direction, 1)) scale(var(--wing-scale, 1));
+  position: static;
+  transform: scaleX(var(--wing-direction, 1));
   transform-origin: center;
   white-space: pre;
 }
 
 .result-wing-left {
-  left: 17px;
-  --wing-direction: 1;
+  --wing-direction: -1;
+  grid-column: 1;
+  justify-self: end;
 }
 
 .result-wing-right {
-  right: 17px;
-  --wing-direction: -1;
+  --wing-direction: 1;
+  grid-column: 3;
+  justify-self: start;
 }
 
 @keyframes scanSweep {
@@ -557,7 +596,7 @@ button {
     transform: translateY(0);
   }
   100% {
-    transform: translateY(209px);
+    transform: translateY(226px);
   }
 }
 
@@ -645,59 +684,47 @@ button {
   }
 }
 
-@media (max-width: 680px) {
+@media (max-width: 767px) {
+  .screen {
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  .screen-landing.is-active,
+  .screen-result.is-active {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
   .screen-landing {
     background: var(--landing);
   }
 
-  .landing-wing {
-    font-size: 3.4px;
-    top: calc(50% - 118px);
+  .landing-wing,
+  .result-wing {
+    display: none;
   }
 
-  .landing-wing-left {
-    left: -70px;
-  }
-
-  .landing-wing-right {
-    right: -70px;
-  }
-
-  .landing-copy {
-    width: 220px;
+  .landing-copy,
+  .diagnostic-form,
+  .result-card {
+    width: 100%;
   }
 
   .camera-frame {
-    height: 56vw;
-    max-height: 209px;
-    max-width: 342px;
-    width: 92vw;
+    height: calc((100vw - 48px) * 0.61);
+    width: 100%;
   }
 
   .scan-beam {
-    top: calc(50% - 150px);
-    width: 54vw;
+    top: calc(50% - 170px);
+    width: calc(100% - 48px);
   }
 
   .screen-result {
     min-height: 100svh;
-    padding: 42px 18px;
-  }
-
-  .result-card {
-    width: min(230px, 62vw);
-  }
-
-  .result-wing {
-    font-size: calc(var(--wing-size, 5px) * 0.58);
-    top: 51%;
-  }
-
-  .result-wing-left {
-    left: -82px;
-  }
-
-  .result-wing-right {
-    right: -82px;
+    padding-top: 42px;
+    padding-bottom: 42px;
   }
 }

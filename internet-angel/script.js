@@ -270,7 +270,6 @@
       reading: "You exist at the edge of things. You are the 3am thought, the unsent message, the tab left open for six months. You feel like you are always arriving, but never quite landing. People feel changed after talking to you but can't explain why.",
       frequency: "Liminal Frequency",
       hz: "396 hz",
-      wingSize: "5.1px",
       sigil: [
         "   /\\",
         "--<  >--",
@@ -287,7 +286,6 @@
       reading: "You remember everything. You are the keeper of screenshots, the one who finds the article from 2011, the one who never forgets what someone said. Your aura carries the weight of accumulated knowledge. This is a gift. (It is also exhausting).",
       frequency: "Memory Frequency",
       hz: "741 hz",
-      wingSize: "2.6px",
       sigil: [
         "[====]",
         "| /\\ |",
@@ -304,7 +302,6 @@
       reading: "You are always transmitting. Something about you reaches people before you do \u2014 your reputation, your energy, your taste \u2014 you don't need to try to be perceived. The frequency you operate on is simply louder than most.",
       frequency: "Transmission Frequency",
       hz: "528 hz",
-      wingSize: "2.9px",
       sigil: [
         "  /\\",
         " /--\\",
@@ -321,7 +318,6 @@
       reading: "You don't quite fit the pattern. Systems malfunction around you. Plans change. Things that should work don't, and things that shouldn't do. You are not broken, you are running on a different version of reality than everyone else.",
       frequency: "Interference Frequency",
       hz: "417 hz",
-      wingSize: "5.15px",
       sigil: [
         "|\\/|",
         "|/\\|__",
@@ -338,7 +334,6 @@
       reading: "You see everything. You are the observer, the one in the corner who notices, the one who remembers the details nobody else caught. You carry other people's stories inside you like a library. You are more powerful than you look.",
       frequency: "Clarity Frequency",
       hz: "852 hz",
-      wingSize: "3.7px",
       sigil: [
         " .---.",
         "/  o  \\",
@@ -355,7 +350,6 @@
       reading: "You leave traces everywhere. Long after you've left a room, a conversation, a relationship, something of you remains. You shape the people who encounter you in ways that take years to fully understand. Your influence is quiet and permanent.",
       frequency: "Resonance Frequency",
       hz: "639 hz",
-      wingSize: "1.95px",
       sigil: [
         "((  ))",
         " (())",
@@ -372,7 +366,6 @@
       reading: "You hold things for other people. Emotions, secrets, energy \u2014 people hand it to you without asking and you carry it without complaint. You are a container. Learning what to put down is your life's work.",
       frequency: "Holding Frequency",
       hz: "174 hz",
-      wingSize: "3.0px",
       sigil: [
         "\\    /",
         " \\  /",
@@ -389,7 +382,6 @@
       reading: "You are between frequencies. Not lost, searching. Your aura is the hum of something that hasn't quite resolved yet. You are in the middle of becoming something and the signal is not yet clear. This is not a bad thing.",
       frequency: "Becoming Frequency",
       hz: "963 hz",
-      wingSize: "7.7px",
       sigil: [
         "/\\/\\//",
         "\\//\\/",
@@ -482,7 +474,6 @@
 
     resultScreen.style.setProperty("--angel-bg", angel.bg);
     resultScreen.style.setProperty("--angel-text", angel.text);
-    resultScreen.style.setProperty("--wing-size", angel.wingSize);
 
     document.getElementById("angel-name").textContent = angel.name;
     document.getElementById("angel-index").textContent = "aura type " + String(index).padStart(2, "0") + " of 08";
