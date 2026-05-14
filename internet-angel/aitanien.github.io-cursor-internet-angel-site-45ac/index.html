@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Internet Angel</title>
+
+  <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png" />
+
+  <meta name="description" content="Internet Angel is an online aura scanner that assigns your digital angel archetype from your screen name, sun sign, Spotify taste, and a ritual facial scan." />
+  <meta name="author" content="Internet Angel" />
+
+  <meta property="og:title" content="Internet Angel" />
+  <meta property="og:description" content="An online aura scanner for screen names, star signs, Spotify ghosts, and terminal prophecies." />
+  <meta property="og:image" content="./og-image.png" />
+  <meta property="og:url" content="https://aitanapico.com" />
+  <meta property="og:type" content="website" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Internet Angel" />
+  <meta name="twitter:description" content="Scan your online aura and receive your angel archetype." />
+  <meta name="twitter:image" content="./og-image.png" />
+
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <div class="ambient-orb ambient-orb-one" aria-hidden="true"></div>
+  <div class="ambient-orb ambient-orb-two" aria-hidden="true"></div>
+  <div class="scanlines" aria-hidden="true"></div>
+
+  <header class="site-header" aria-label="Primary">
+    <a class="wordmark" href="#page-1" data-route="landing" aria-label="Internet Angel home">
+      <span class="wordmark-symbol">IA</span>
+      <span>Internet Angel</span>
+    </a>
+    <nav class="site-nav" aria-label="Pages">
+      <button class="nav-link is-active" type="button" data-route="landing">Page 1</button>
+      <button class="nav-link" type="button" data-route="result">Page 2</button>
+      <button class="nav-link" type="button" data-route="receipt">Page 3</button>
+      <button class="nav-link" type="button" data-route="types">Page 4</button>
+    </nav>
+  </header>
+
+  <main class="app-shell">
+    <section class="page page-landing is-active" id="page-1" data-page="landing" aria-labelledby="landing-title">
+      <div class="page-label">Page 1 / Landing + Form</div>
+      <div class="landing-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Online aura scanner / beta rite</p>
+          <h1 id="landing-title">Let the internet look back at you.</h1>
+          <p class="hero-intro">
+            Internet Angel reads your screen name, sun sign, Spotify residue, and a simulated facial scan to assign one of eight digital angel archetypes.
+          </p>
+          <div class="hero-actions">
+            <button class="button button-primary" type="button" data-focus-form>Begin scan</button>
+            <button class="button button-ghost" type="button" data-route="types">View all angels</button>
+          </div>
+        </div>
+
+        <form class="scanner-card" id="aura-form">
+          <div class="card-heading">
+            <span>Ritual Inputs</span>
+            <span class="mono">v0.08</span>
+          </div>
+
+          <label class="field">
+            <span>Screen name</span>
+            <input id="screen-name" name="screenName" type="text" autocomplete="nickname" placeholder="@softstatic" required />
+          </label>
+
+          <label class="field">
+            <span>Sun sign</span>
+            <select id="sun-sign" name="sunSign" required>
+              <option value="">Choose your sign</option>
+              <option>Aries</option>
+              <option>Taurus</option>
+              <option>Gemini</option>
+              <option>Cancer</option>
+              <option>Leo</option>
+              <option>Virgo</option>
+              <option>Libra</option>
+              <option>Scorpio</option>
+              <option>Sagittarius</option>
+              <option>Capricorn</option>
+              <option>Aquarius</option>
+              <option>Pisces</option>
+            </select>
+          </label>
+
+          <div class="field-row">
+            <label class="field">
+              <span>Spotify username</span>
+              <input id="spotify-username" name="spotifyUsername" type="text" autocomplete="username" placeholder="your listening ghost" />
+            </label>
+            <button class="button button-small" id="spotify-connect" type="button">Connect</button>
+          </div>
+          <p class="helper-text" id="spotify-status">Spotify credentials can be added later. Until then, taste is simulated from the username.</p>
+
+          <div class="face-scan" id="face-scan" aria-live="polite">
+            <div class="face-frame">
+              <div class="face-grid" aria-hidden="true"></div>
+              <div class="face-oval" aria-hidden="true"></div>
+              <div class="scan-beam" aria-hidden="true"></div>
+              <div class="scan-points" aria-hidden="true">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+            <div class="scan-meta">
+              <span id="scan-label">Facial scan waiting</span>
+              <span id="scan-percent">00%</span>
+            </div>
+            <div class="progress-track" aria-hidden="true">
+              <div class="progress-bar" id="scan-progress"></div>
+            </div>
+            <button class="button button-scan" id="scan-button" type="button">Animate facial scan</button>
+          </div>
+
+          <button class="button button-primary button-submit" type="submit">Generate aura result</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="page page-result" id="page-2" data-page="result" aria-labelledby="result-title">
+      <div class="page-label">Page 2 / Result</div>
+      <div class="result-layout">
+        <div class="result-main">
+          <p class="eyebrow" id="result-kicker">Aura result pending</p>
+          <h2 id="result-title">Your angel has not arrived yet.</h2>
+          <p class="result-description" id="result-description">
+            Complete Page 1 to generate an archetype, sigil, wing pattern, and prophecy.
+          </p>
+          <div class="result-actions">
+            <button class="button button-primary" type="button" data-route="landing">Scan again</button>
+            <button class="button button-ghost" type="button" data-route="receipt">Open receipt</button>
+          </div>
+        </div>
+
+        <aside class="angel-card" aria-label="Angel result details">
+          <pre class="ascii-wings" id="ascii-wings" aria-hidden="true">
+        .     .
+     .  \   /  .
+   .     \ /     .
+        (   )
+         \_/
+          </pre>
+          <div class="sigil-block">
+            <span class="section-caption">Your Sigil</span>
+            <pre class="sigil" id="result-sigil">-- awaiting signal --</pre>
+          </div>
+          <div class="prophecy-block">
+            <span class="section-caption">Prophecy</span>
+            <p id="result-prophecy">The signal has not resolved.</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <section class="page page-receipt" id="page-3" data-page="receipt" aria-labelledby="receipt-title">
+      <div class="page-label">Page 3 / Aura Receipt</div>
+      <div class="receipt-grid">
+        <div>
+          <p class="eyebrow">Transmission log</p>
+          <h2 id="receipt-title">A receipt for the version of you that just appeared.</h2>
+          <p class="hero-intro">
+            Page 3 records the scan inputs, the inferred Spotify pattern, and a shareable terminal summary.
+          </p>
+        </div>
+        <div class="receipt-card">
+          <div class="receipt-header">
+            <span>INTERNET ANGEL RECEIPT</span>
+            <span id="receipt-id">#000000</span>
+          </div>
+          <dl class="receipt-list">
+            <div>
+              <dt>Screen name</dt>
+              <dd id="receipt-name">not scanned</dd>
+            </div>
+            <div>
+              <dt>Sun sign</dt>
+              <dd id="receipt-sign">unknown</dd>
+            </div>
+            <div>
+              <dt>Spotify pattern</dt>
+              <dd id="receipt-spotify">not connected</dd>
+            </div>
+            <div>
+              <dt>Angel type</dt>
+              <dd id="receipt-type">unassigned</dd>
+            </div>
+          </dl>
+          <pre class="receipt-output" id="receipt-output">Run the scanner to print your aura receipt.</pre>
+          <button class="button button-small" id="copy-receipt" type="button">Copy receipt</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page page-types" id="page-4" data-page="types" aria-labelledby="types-title">
+      <div class="page-label">Page 4 / All Types</div>
+      <div class="types-heading">
+        <div>
+          <p class="eyebrow">The eight angel archetypes</p>
+          <h2 id="types-title">Every aura resolves into a different kind of signal.</h2>
+        </div>
+        <button class="button button-ghost" type="button" data-route="landing">Return to scanner</button>
+      </div>
+      <div class="types-grid" id="types-grid" aria-live="polite"></div>
+    </section>
+  </main>
+
+  <script src="./app.js" defer></script>
+</body>
+</html>
