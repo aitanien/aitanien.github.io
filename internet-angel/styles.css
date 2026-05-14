@@ -135,15 +135,13 @@ h2 {
 .screen-landing {
   align-items: center;
   background:
-    linear-gradient(
-      to bottom,
-      var(--paper) 0,
-      var(--paper) calc(50% - 151px),
-      var(--landing) calc(50% - 151px),
-      var(--landing) calc(50% + 151px),
-      var(--paper) calc(50% + 151px),
-      var(--paper) 100%
-    );
+    radial-gradient(
+      ellipse 520px 330px at center,
+      rgba(231, 255, 255, 1) 0%,
+      rgba(231, 255, 255, 0.78) 42%,
+      rgba(231, 255, 255, 0) 72%
+    ),
+    var(--paper);
   grid-template-columns: minmax(0, 1fr) var(--center-width) minmax(0, 1fr);
   justify-content: stretch;
   width: 100%;
@@ -164,23 +162,30 @@ h2 {
 
 .landing-copy h1 {
   font-family: "Snap It Mono", "Courier New", monospace;
-  font-size: var(--heading-size);
+  font-size: 44px;
   font-weight: 400;
   letter-spacing: -0.08em;
   line-height: 1.1;
   margin: 0 0 24px;
+  width: 100%;
 }
 
 .landing-copy p {
-  font-family: "Neue Montreal", Arial, sans-serif;
+  font-family: "Panchi Mono", "Courier New", monospace;
   font-size: var(--body-size);
   letter-spacing: 0.01em;
-  line-height: 1.5;
+  line-height: 1.1;
   margin: 0 0 24px;
+  width: 100%;
+}
+
+.landing-copy .angel-button {
+  display: block;
+  width: 100%;
 }
 
 .landing-wing {
-  animation: wingBreath 6.6s ease-in-out infinite;
+  animation: landingWingPulse 4.8s ease-in-out infinite;
   font-family: "Panchi Mono", "Courier New", monospace;
   font-size: var(--body-size);
   letter-spacing: 0;
@@ -684,6 +689,16 @@ h2 {
   }
 }
 
+@keyframes landingWingPulse {
+  0%,
+  100% {
+    letter-spacing: 0;
+  }
+  50% {
+    letter-spacing: 0.45px;
+  }
+}
+
 @media (max-width: 767px) {
   .screen {
     padding-left: 24px;
@@ -698,7 +713,14 @@ h2 {
   }
 
   .screen-landing {
-    background: var(--landing);
+    background:
+      radial-gradient(
+        ellipse 110% 70% at center,
+        rgba(231, 255, 255, 1) 0%,
+        rgba(231, 255, 255, 0.78) 42%,
+        rgba(231, 255, 255, 0) 72%
+      ),
+      var(--paper);
   }
 
   .landing-wing,
