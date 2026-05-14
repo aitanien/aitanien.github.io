@@ -136,7 +136,7 @@ h2 {
   align-items: center;
   background:
     radial-gradient(
-      ellipse 520px 330px at center,
+      ellipse 980px 640px at center,
       rgba(231, 255, 255, 1) 0%,
       rgba(231, 255, 255, 0.78) 42%,
       rgba(231, 255, 255, 0) 72%
@@ -162,9 +162,9 @@ h2 {
 
 .landing-copy h1 {
   font-family: "Snap It Mono", "Courier New", monospace;
-  font-size: 44px;
+  font-size: 64px;
   font-weight: 400;
-  letter-spacing: -0.08em;
+  letter-spacing: -0.02em;
   line-height: 1.1;
   margin: 0 0 24px;
   width: 100%;
@@ -715,7 +715,7 @@ h2 {
   .screen-landing {
     background:
       radial-gradient(
-        ellipse 110% 70% at center,
+        ellipse 170% 105% at center,
         rgba(231, 255, 255, 1) 0%,
         rgba(231, 255, 255, 0.78) 42%,
         rgba(231, 255, 255, 0) 72%
