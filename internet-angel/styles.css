@@ -363,7 +363,7 @@ h2 {
 }
 
 .scan-line {
-  animation: scanSweep 2.7s linear infinite;
+  animation: scanSweep 2.7s ease-in-out infinite alternate;
   animation-play-state: paused;
   background: rgba(93, 255, 248, 0.72);
   box-shadow: 0 0 14px var(--scan);
@@ -452,8 +452,16 @@ h2 {
   animation: resultMaterialize 900ms ease both;
   grid-column: 2;
   margin-top: -2px;
+  text-align: left;
   width: var(--center-width);
   z-index: 1;
+}
+
+.result-kicker {
+  font-family: "Neue Montreal", Arial, sans-serif;
+  font-size: var(--body-size);
+  line-height: 1.5;
+  text-align: center;
 }
 
 .result-card h2 {
@@ -467,6 +475,10 @@ h2 {
 }
 
 .angel-index {
+  font-family: "Panchi Mono", "Courier New", monospace;
+  font-size: var(--body-size);
+  line-height: 1.5;
+  text-transform: lowercase;
   text-align: center;
 }
 
@@ -474,8 +486,19 @@ h2 {
   margin-top: 24px;
 }
 
+.result-section-label {
+  font-family: "Neue Montreal", Arial, sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
 .reading-block p:last-child,
-#prophecy {
+#prophecy,
+.sigil {
+  text-align: left;
+}
+
+.reading-block p:last-child {
   font-family: "Neue Montreal", Arial, sans-serif;
   font-size: var(--body-size);
   letter-spacing: -0.01em;
@@ -488,6 +511,13 @@ h2 {
   gap: 24px;
   grid-template-columns: 1fr 1fr;
   margin-top: 32px;
+}
+
+#prophecy {
+  font-family: "Panchi Mono", "Courier New", monospace;
+  font-size: var(--body-size);
+  line-height: 1.5;
+  margin: 8px 0 0;
 }
 
 .sigil {
@@ -518,16 +548,17 @@ h2 {
 
 #frequency-hz {
   font-family: "Neue Montreal", Arial, sans-serif;
-  font-size: var(--body-size);
+  font-size: 20px;
   line-height: 1.5;
   margin: 0 0 3px;
 }
 
 #frequency-name {
   font-family: "Neue Montreal", Arial, sans-serif;
-  font-size: var(--body-size);
+  font-size: 14px;
   line-height: 1.5;
   margin: 0;
+  text-transform: lowercase;
 }
 
 .back-start-button {
@@ -580,12 +611,20 @@ h2 {
   justify-self: start;
 }
 
+.screen-result.reverse-wings .result-wing-left {
+  --wing-direction: 1;
+}
+
+.screen-result.reverse-wings .result-wing-right {
+  --wing-direction: -1;
+}
+
 @keyframes scanSweep {
   0% {
-    transform: translateY(0);
+    transform: translateY(-2px);
   }
   100% {
-    transform: translateY(var(--scan-frame-height));
+    transform: translateY(calc(var(--scan-frame-height) - 2px));
   }
 }
 

@@ -268,15 +268,14 @@
       name: "The Threshold Angel",
       bg: "#9B72F2",
       text: "#E1F572",
-      reading: "You exist at the edge of things. You are the 3am thought, the unsent message, the tab left open for six months. You feel like you are always arriving, but never quite landing. People feel changed after talking to you but can't explain why.",
+      reading: "You exist at the edge of things.\u00a0You are the 3am thought, the unsent message, the tab left open for six months. You feel like you are always arriving, but never quite landing. People feel changed after talking to you but can't explain why.",
       frequency: "Liminal Frequency",
       hz: "396 hz",
       sigil: [
-        "   /\\",
-        "--<  >--",
-        "   \\/",
-        "   ||",
-        "  /__\\"
+        "⠀⢀⣴⣶⣶⣄⠀",
+        "⢠⣿⠟⠉⠻⣿⡄",
+        "⠘⣿⣄⣀⣠⣿⠃",
+        "⠀⠈⠻⣿⠟⠁⠀"
       ].join("\n"),
       wing: wingArt.threshold
     },
@@ -284,15 +283,14 @@
       name: "The Archive Angel",
       bg: "#E4E4E4",
       text: "#FF1414",
-      reading: "You remember everything. You are the keeper of screenshots, the one who finds the article from 2011, the one who never forgets what someone said. Your aura carries the weight of accumulated knowledge. This is a gift. (It is also exhausting).",
+      reading: "You remember everything.\u00a0You are the keeper of screenshots, the one who finds the article from 2011, the one who never forgets what someone said. Your aura carries the weight of accumulated knowledge. This is a gift. (It is also exhausting).",
       frequency: "Memory Frequency",
       hz: "741 hz",
       sigil: [
-        "[====]",
-        "| /\\ |",
-        "| \\/ |",
-        "[====]",
-        "  ||"
+        "⣿⣿⣿⣿⣿⣿⣿",
+        "⣿⠋⣠⣤⣄⠙⣿",
+        "⣿⠀⣿⣿⣿⠀⣿",
+        "⣿⣄⠙⠿⠋⣠⣿"
       ].join("\n"),
       wing: wingArt.archive
     },
@@ -300,15 +298,14 @@
       name: "The Signal Angel",
       bg: "#EEFBA5",
       text: "#9B72F2",
-      reading: "You are always transmitting. Something about you reaches people before you do \u2014 your reputation, your energy, your taste \u2014 you don't need to try to be perceived. The frequency you operate on is simply louder than most.",
+      reading: "You are always transmitting.\u00a0Something about you reaches people before you do...your reputation, your energy, your taste...you don't need to try to be perceived. The frequency you operate on is simply louder than most.",
       frequency: "Transmission Frequency",
       hz: "528 hz",
       sigil: [
-        "  /\\",
-        " /--\\",
-        "<---->",
-        " \\--/",
-        "  \\/"
+        "⠀⠀⣀⣀⣀⠀⠀",
+        "⣶⣿⠿⠿⣿⣶",
+        "⠀⠈⢿⣿⡿⠁⠀",
+        "⣶⣿⣶⣶⣿⣶"
       ].join("\n"),
       wing: wingArt.signal
     },
@@ -316,15 +313,15 @@
       name: "The Glitch Angel",
       bg: "#F092C3",
       text: "#ECFFED",
-      reading: "You don't quite fit the pattern. Systems malfunction around you. Plans change. Things that should work don't, and things that shouldn't do. You are not broken, you are running on a different version of reality than everyone else.",
+      reading: "You don't quite fit the pattern.\u00a0Systems malfunction around you. Plans change. Things that should work don't, and things that shouldn't do. You are not broken, you are running on a different version of reality than everyone else.",
       frequency: "Interference Frequency",
       hz: "417 hz",
+      reverseWings: true,
       sigil: [
-        "|\\/|",
-        "|/\\|__",
-        "  __/\\|",
-        "|/  \\|",
-        "--  --"
+        "⣤⣤⠀⢀⣤⣤",
+        "⠈⣿⣷⣿⠋⠀",
+        "⠀⣿⠟⣿⣄⠀",
+        "⠾⠋⠀⠈⠿⠷"
       ].join("\n"),
       wing: wingArt.glitch
     },
@@ -332,15 +329,14 @@
       name: "The Witness Angel",
       bg: "#8BE58E",
       text: "#5A1CDA",
-      reading: "You see everything. You are the observer, the one in the corner who notices, the one who remembers the details nobody else caught. You carry other people's stories inside you like a library. You are more powerful than you look.",
+      reading: "You see everything.\u00a0You are the observer, the one in the corner who notices, the one who remembers the details nobody else caught. You carry other people's stories inside you like a library. You are more powerful than you look.",
       frequency: "Clarity Frequency",
       hz: "852 hz",
       sigil: [
-        " .---.",
-        "/  o  \\",
-        "< --- >",
-        "\\  o  /",
-        " '---'"
+        "⠀⣠⣾⣿⣷⣄⠀",
+        "⣾⣿⠋⠙⣿⣿⣷",
+        "⣿⣿⠀⣀⠀⣿⣿",
+        "⠻⣿⣦⣤⣴⣿⠟"
       ].join("\n"),
       wing: wingArt.witness
     },
@@ -348,15 +344,15 @@
       name: "The Echo Angel",
       bg: "#3D0300",
       text: "#FFCFCF",
-      reading: "You leave traces everywhere. Long after you've left a room, a conversation, a relationship, something of you remains. You shape the people who encounter you in ways that take years to fully understand. Your influence is quiet and permanent.",
+      reading: "You leave traces everywhere.\u00a0Long after you've left a room, a conversation, a relationship, something of you remains. You shape the people who encounter you in ways that take years to fully understand. Your influence is quiet and permanent.",
       frequency: "Resonance Frequency",
       hz: "639 hz",
+      reverseWings: true,
       sigil: [
-        "((  ))",
-        " (())",
-        "  ||",
-        " (())",
-        "((  ))"
+        "⣶⣄⠀⠀⠀⣠⣶",
+        "⠈⣿⣦⠀⣴⣿⠁",
+        "⠀⠈⣿⣿⣿⠁⠀",
+        "⣠⣾⠟⠀⠻⣷⣄"
       ].join("\n"),
       wing: wingArt.echo
     },
@@ -364,15 +360,15 @@
       name: "The Vessel Angel",
       bg: "#F96D6D",
       text: "#360300",
-      reading: "You hold things for other people. Emotions, secrets, energy \u2014 people hand it to you without asking and you carry it without complaint. You are a container. Learning what to put down is your life's work.",
+      reading: "You hold things for other people.\u00a0Emotions, secrets, energy...people hand it to you without asking and you carry it without complaint. You are a container. Learning what to put down is your life's work.",
       frequency: "Holding Frequency",
       hz: "174 hz",
+      reverseWings: true,
       sigil: [
-        "\\    /",
-        " \\  /",
-        " |  |",
-        " |__|",
-        " \\__/"
+        "⢀⣴⣿⣿⣦⡀",
+        "⣿⣿⠁⠈⣿⣿",
+        "⣿⣿⣄⣠⣿⣿",
+        "⠈⠻⣿⣿⠟⠁"
       ].join("\n"),
       wing: wingArt.vessel
     },
@@ -380,15 +376,14 @@
       name: "The Static Angel",
       bg: "#C6F2FF",
       text: "#FF1ECB",
-      reading: "You are between frequencies. Not lost, searching. Your aura is the hum of something that hasn't quite resolved yet. You are in the middle of becoming something and the signal is not yet clear. This is not a bad thing.",
+      reading: "You are between frequencies.\u00a0Not lost, searching. Your aura is the hum of something that hasn't quite resolved yet. You are in the middle of becoming something and the signal is not yet clear. This is not a bad thing.",
       frequency: "Becoming Frequency",
       hz: "963 hz",
       sigil: [
-        "/\\/\\//",
-        "\\//\\/",
-        "--++--",
-        "/\\/\\//",
-        "\\//\\/"
+        "⣿⡄⢀⣿⡄⢀⣿",
+        "⠘⣿⣿⠘⣿⣿⠃",
+        "⣶⠟⠻⣶⠟⠻⣶",
+        "⠿⠀⠀⠿⠀⠀⠿"
       ].join("\n"),
       wing: wingArt.static
     }
@@ -475,6 +470,7 @@
 
     resultScreen.style.setProperty("--angel-bg", angel.bg);
     resultScreen.style.setProperty("--angel-text", angel.text);
+    resultScreen.classList.toggle("reverse-wings", Boolean(angel.reverseWings));
 
     document.getElementById("angel-name").textContent = angel.name;
     document.getElementById("angel-index").textContent = "aura type " + String(index).padStart(2, "0") + " of 08";
@@ -482,7 +478,7 @@
     document.getElementById("angel-sigil").textContent = angel.sigil;
     document.getElementById("prophecy").textContent = nextProphecy();
     document.getElementById("frequency-hz").textContent = angel.hz;
-    document.getElementById("frequency-name").textContent = angel.frequency;
+    document.getElementById("frequency-name").textContent = angel.frequency.toLowerCase();
     document.getElementById("result-wing-left").textContent = angel.wing;
     document.getElementById("result-wing-right").textContent = angel.wing;
   }
