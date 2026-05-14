@@ -228,7 +228,7 @@ h2 {
 }
 
 .form-intro {
-  font-family: "Neue Montreal", Arial, sans-serif;
+  font-family: "Panchi Mono", "Courier New", monospace;
   font-size: var(--body-size);
   letter-spacing: 0.015em;
   line-height: 1.5;
@@ -284,11 +284,12 @@ h2 {
 
 .form-note {
   font-family: "Neue Montreal", Arial, sans-serif;
-  font-size: var(--body-size);
+  font-size: 14px;
   font-style: italic;
   letter-spacing: -0.01em;
   line-height: 1.5;
   margin: -8px 0 32px;
+  opacity: 0.6;
 }
 
 .form-button {
