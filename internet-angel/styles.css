@@ -1,0 +1,598 @@
+@font-face {
+  font-family: "Panchi Mono";
+  src:
+    url("./fonts/PanchiMono.woff2") format("woff2"),
+    url("./fonts/Panchi Mono.woff2") format("woff2"),
+    url("./fonts/panchi-mono.woff2") format("woff2"),
+    url("./fonts/PanchiMono.woff") format("woff"),
+    url("./fonts/PanchiMono.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Neue Montreal";
+  src:
+    url("./fonts/NeueMontreal.woff2") format("woff2"),
+    url("./fonts/Neue Montreal.woff2") format("woff2"),
+    url("./fonts/neue-montreal.woff2") format("woff2"),
+    url("./fonts/NeueMontreal.woff") format("woff"),
+    url("./fonts/NeueMontreal.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Snap It Mono";
+  src:
+    url("./fonts/SnapItMono.woff2") format("woff2"),
+    url("./fonts/Snap it mono.woff2") format("woff2"),
+    url("./fonts/snap-it-mono.woff2") format("woff2"),
+    url("./fonts/SnapItMono.woff") format("woff"),
+    url("./fonts/SnapItMono.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  --paper: #ffffff;
+  --landing: #e7ffff;
+  --ink: #000000;
+  --button: #a9f5f1;
+  --button-border: #777777;
+  --input-border: #a8a8a8;
+  --scan: #5dfff8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Panchi Mono", "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.1;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+.app {
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+.screen {
+  display: none;
+  min-height: 100vh;
+  position: relative;
+}
+
+.screen.is-active {
+  display: flex;
+}
+
+.visually-hidden {
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.technical-label {
+  font-family: "Neue Montreal", Arial, sans-serif;
+  font-size: 9px;
+  letter-spacing: 0.035em;
+  line-height: 1;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.angel-button {
+  appearance: none;
+  background: var(--paper);
+  border: 1px solid var(--button-border);
+  border-radius: 0;
+  color: var(--ink);
+  height: 24px;
+  min-width: 186px;
+  padding: 0 14px;
+  text-align: center;
+}
+
+.angel-button:hover,
+.angel-button:focus-visible {
+  background: var(--button);
+  outline: none;
+}
+
+/* Landing */
+.screen-landing {
+  align-items: center;
+  background:
+    linear-gradient(
+      to bottom,
+      var(--paper) 0,
+      var(--paper) calc(50% - 151px),
+      var(--landing) calc(50% - 151px),
+      var(--landing) calc(50% + 151px),
+      var(--paper) calc(50% + 151px),
+      var(--paper) 100%
+    );
+  justify-content: center;
+}
+
+.landing-copy {
+  margin-top: 5px;
+  text-align: center;
+  width: 210px;
+  z-index: 1;
+}
+
+.landing-copy h1 {
+  font-family: "Snap It Mono", "Courier New", monospace;
+  font-size: clamp(28px, 4.15vw, 33px);
+  font-weight: 400;
+  letter-spacing: -0.08em;
+  line-height: 0.82;
+  margin: 0 0 15px;
+}
+
+.landing-copy p {
+  font-family: "Neue Montreal", Arial, sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.01em;
+  line-height: 1.08;
+  margin: 0 0 14px;
+}
+
+.landing-wing {
+  font-family: "Panchi Mono", "Courier New", monospace;
+  font-size: 7px;
+  letter-spacing: 1px;
+  line-height: 0.75;
+  margin: 0;
+  pointer-events: none;
+  position: absolute;
+  top: calc(50% - 48px);
+  white-space: pre;
+}
+
+.landing-wing-left {
+  left: 15px;
+}
+
+.landing-wing-right {
+  right: 15px;
+}
+
+/* Form */
+.screen-form {
+  align-items: center;
+  background: var(--paper);
+  justify-content: center;
+}
+
+.diagnostic-form {
+  margin-top: 4px;
+  text-align: left;
+  width: 186px;
+}
+
+.form-intro {
+  font-family: "Neue Montreal", Arial, sans-serif;
+  font-size: 8px;
+  letter-spacing: 0.015em;
+  line-height: 1.12;
+  margin: 0 0 20px;
+  text-align: center;
+}
+
+.diagnostic-form input,
+.diagnostic-form select {
+  appearance: none;
+  background: var(--paper);
+  border: 1px solid var(--input-border);
+  border-radius: 0;
+  color: var(--ink);
+  display: block;
+  font-family: "Neue Montreal", Arial, sans-serif;
+  font-size: 9px;
+  height: 25px;
+  margin: 0 0 11px;
+  padding: 0 7px;
+  width: 100%;
+}
+
+.diagnostic-form select {
+  background-image:
+    linear-gradient(45deg, transparent 50%, #777 50%),
+    linear-gradient(135deg, #777 50%, transparent 50%);
+  background-position:
+    calc(100% - 12px) 11px,
+    calc(100% - 8px) 11px;
+  background-repeat: no-repeat;
+  background-size: 4px 4px, 4px 4px;
+  color: #8b8b8b;
+}
+
+.diagnostic-form select.has-value {
+  color: var(--ink);
+}
+
+.diagnostic-form input::placeholder {
+  color: #8b8b8b;
+  opacity: 1;
+}
+
+.form-note {
+  font-family: "Neue Montreal", Arial, sans-serif;
+  font-size: 6px;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  line-height: 1;
+  margin: -5px 0 29px;
+}
+
+.form-button {
+  background: var(--button);
+  width: 100%;
+}
+
+/* Scan */
+.screen-scan {
+  align-items: center;
+  background: var(--paper);
+  flex-direction: column;
+  justify-content: center;
+}
+
+.scan-beam {
+  animation: beamPulse 2.4s ease-in-out infinite;
+  background: var(--scan);
+  box-shadow: 0 0 8px var(--scan), 0 0 20px rgba(93, 255, 248, 0.75);
+  height: 2px;
+  left: 50%;
+  position: absolute;
+  top: calc(50% - 135px);
+  transform: translateX(-50%);
+  width: min(420px, 56vw);
+}
+
+.scan-beam::before,
+.scan-beam::after {
+  background: var(--scan);
+  border-radius: 50%;
+  box-shadow: 0 0 8px var(--scan), 0 0 18px var(--scan), 0 0 28px var(--scan);
+  content: "";
+  height: 14px;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+}
+
+.scan-beam::before {
+  left: -7px;
+}
+
+.scan-beam::after {
+  right: -7px;
+}
+
+.camera-frame {
+  background: #d8fbfb;
+  height: 209px;
+  margin-top: -2px;
+  overflow: hidden;
+  position: relative;
+  width: 342px;
+}
+
+.camera-frame video,
+.camera-fallback {
+  display: block;
+  height: 100%;
+  object-fit: cover;
+  transform: scaleX(-1);
+  width: 100%;
+}
+
+.camera-fallback {
+  align-items: center;
+  background:
+    linear-gradient(135deg, rgba(93, 255, 248, 0.22), rgba(240, 146, 195, 0.16)),
+    #eefafa;
+  color: #333333;
+  display: flex;
+  font-family: "Neue Montreal", Arial, sans-serif;
+  font-size: 9px;
+  justify-content: center;
+  letter-spacing: 0.03em;
+  inset: 0;
+  position: absolute;
+  text-transform: uppercase;
+  transform: none;
+}
+
+.camera-fallback[hidden] {
+  display: none;
+}
+
+.scan-overlay {
+  inset: 0;
+  position: absolute;
+}
+
+.scan-line {
+  animation: scanSweep 2.3s linear infinite;
+  background: rgba(93, 255, 248, 0.72);
+  box-shadow: 0 0 14px var(--scan);
+  height: 2px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.corner {
+  border-color: var(--scan);
+  border-style: solid;
+  height: 22px;
+  opacity: 0.9;
+  position: absolute;
+  width: 22px;
+}
+
+.corner-tl {
+  border-width: 1px 0 0 1px;
+  left: 12px;
+  top: 12px;
+}
+
+.corner-tr {
+  border-width: 1px 1px 0 0;
+  right: 12px;
+  top: 12px;
+}
+
+.corner-bl {
+  border-width: 0 0 1px 1px;
+  bottom: 12px;
+  left: 12px;
+}
+
+.corner-br {
+  border-width: 0 1px 1px 0;
+  bottom: 12px;
+  right: 12px;
+}
+
+.scan-caption {
+  font-style: italic;
+  margin: 49px 0 0;
+}
+
+/* Result */
+.screen-result {
+  align-items: center;
+  background: var(--angel-bg, #9b72f2);
+  color: var(--angel-text, #e1f572);
+  justify-content: center;
+  transition: background-color 300ms ease, color 300ms ease;
+}
+
+.result-card {
+  margin-top: -2px;
+  width: 185px;
+  z-index: 1;
+}
+
+.result-card h2 {
+  font-family: "Snap It Mono", "Courier New", monospace;
+  font-size: 18px;
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  line-height: 1;
+  margin: 14px 0 6px;
+  text-align: center;
+}
+
+.angel-index {
+  font-size: 7px;
+  text-align: center;
+}
+
+.reading-block {
+  margin-top: 24px;
+}
+
+.reading-block p:last-child,
+#prophecy {
+  font-family: "Neue Montreal", Arial, sans-serif;
+  font-size: 8px;
+  letter-spacing: -0.01em;
+  line-height: 1.03;
+  margin: 7px 0 0;
+}
+
+.result-columns {
+  display: grid;
+  gap: 19px;
+  grid-template-columns: 72px 1fr;
+  margin-top: 25px;
+}
+
+.sigil {
+  color: inherit;
+  font-family: "Panchi Mono", "Courier New", monospace;
+  font-size: 8px;
+  letter-spacing: 1px;
+  line-height: 0.82;
+  margin: 9px 0 0;
+  white-space: pre;
+}
+
+.frequency-block {
+  margin-top: 29px;
+}
+
+.frequency-row {
+  align-items: flex-start;
+  display: flex;
+  gap: 9px;
+  margin-top: 9px;
+}
+
+.note {
+  font-size: 21px;
+  line-height: 0.8;
+}
+
+#frequency-hz {
+  font-family: "Snap It Mono", "Courier New", monospace;
+  font-size: 16px;
+  line-height: 0.9;
+  margin: 0 0 3px;
+}
+
+#frequency-name {
+  font-family: "Neue Montreal", Arial, sans-serif;
+  font-size: 7px;
+  margin: 0;
+}
+
+.result-wing {
+  animation: wingBreath 4.8s ease-in-out infinite;
+  color: inherit;
+  font-family: "Panchi Mono", "Courier New", monospace;
+  font-size: 6px;
+  letter-spacing: 1px;
+  line-height: 0.78;
+  margin: 0;
+  max-width: 32vw;
+  opacity: 0.95;
+  pointer-events: none;
+  position: absolute;
+  top: calc(50% - 75px);
+  transform-origin: center;
+  white-space: pre;
+}
+
+.result-wing-left {
+  left: 17px;
+}
+
+.result-wing-right {
+  right: 17px;
+}
+
+@keyframes scanSweep {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(209px);
+  }
+}
+
+@keyframes beamPulse {
+  0%,
+  100% {
+    opacity: 0.62;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+@keyframes wingBreath {
+  0%,
+  100% {
+    opacity: 0.74;
+    transform: scale(0.985);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.015);
+  }
+}
+
+@media (max-width: 680px) {
+  .screen-landing {
+    background: var(--landing);
+  }
+
+  .landing-wing {
+    font-size: 5px;
+    top: calc(50% - 114px);
+  }
+
+  .landing-wing-left {
+    left: -70px;
+  }
+
+  .landing-wing-right {
+    right: -70px;
+  }
+
+  .landing-copy {
+    width: 220px;
+  }
+
+  .camera-frame {
+    height: 56vw;
+    max-height: 209px;
+    max-width: 342px;
+    width: 92vw;
+  }
+
+  .scan-beam {
+    top: calc(50% - 150px);
+    width: 54vw;
+  }
+
+  .screen-result {
+    min-height: 100svh;
+    padding: 42px 18px;
+  }
+
+  .result-card {
+    width: min(230px, 62vw);
+  }
+
+  .result-wing {
+    font-size: 4px;
+    top: 51%;
+  }
+
+  .result-wing-left {
+    left: -82px;
+  }
+
+  .result-wing-right {
+    right: -82px;
+  }
+}
