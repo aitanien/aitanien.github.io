@@ -551,7 +551,7 @@ h2 {
 }
 
 .result-wing {
-  animation: wingBreath 6.8s ease-in-out infinite;
+  animation: landingWingPulse 4.8s ease-in-out infinite;
   color: inherit;
   font-family: "Panchi Mono", "Courier New", monospace;
   font-size: var(--body-size);
