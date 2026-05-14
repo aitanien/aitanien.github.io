@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Internet Angel</title>
+    <link rel="stylesheet" href="./styles.css">
+  </head>
+  <body>
+    <main id="app" class="app">
+      <section class="screen screen-landing is-active" data-screen="landing" aria-labelledby="landing-title">
+        <pre class="landing-wing landing-wing-left" aria-hidden="true"></pre>
+        <div class="landing-copy">
+          <h1 id="landing-title">the online<br>digital&nbsp;aura<br>scanner</h1>
+          <p>
+            This is an extremely scientific and highly<br>
+            accurate spiritual diagnostic tool. You will be<br>
+            asked for camera permission in order to conduct<br>
+            a full spectral analysis. No prior experience<br>
+            with angels required.
+          </p>
+          <button class="angel-button" type="button" data-action="start">enter</button>
+        </div>
+        <pre class="landing-wing landing-wing-right" aria-hidden="true"></pre>
+      </section>
+
+      <section class="screen screen-form" data-screen="form" aria-labelledby="form-title">
+        <form class="diagnostic-form" id="diagnostic-form">
+          <h2 id="form-title" class="visually-hidden">Diagnostic intake</h2>
+          <p class="form-intro">
+            In order to conduct an accurate reading, the diagnostic tool requires the following information. All data is processed by the angels and immediately forgotten.
+          </p>
+
+          <label class="visually-hidden" for="screen-name">Screen name</label>
+          <input id="screen-name" name="screenName" type="text" placeholder="Your screen name" autocomplete="nickname">
+
+          <label class="visually-hidden" for="zodiac-sign">Zodiac sign</label>
+          <select id="zodiac-sign" name="zodiac">
+            <option value="">Your zodiac sign</option>
+            <option value="aries">Aries</option>
+            <option value="taurus">Taurus</option>
+            <option value="gemini">Gemini</option>
+            <option value="cancer">Cancer</option>
+            <option value="leo">Leo</option>
+            <option value="virgo">Virgo</option>
+            <option value="libra">Libra</option>
+            <option value="scorpio">Scorpio</option>
+            <option value="sagittarius">Sagittarius</option>
+            <option value="capricorn">Capricorn</option>
+            <option value="aquarius">Aquarius</option>
+            <option value="pisces">Pisces</option>
+          </select>
+
+          <label class="visually-hidden" for="spotify-username">Spotify username</label>
+          <input id="spotify-username" name="spotify" type="text" placeholder="Your spotify username*" autocomplete="username">
+          <p class="form-note">*Optional. The angels are not judgmental about music taste.</p>
+
+          <button class="angel-button form-button" type="submit">conduct face scan</button>
+        </form>
+      </section>
+
+      <section class="screen screen-scan" data-screen="scan" aria-labelledby="scan-title">
+        <h2 id="scan-title" class="visually-hidden">Face scan</h2>
+        <div class="camera-frame">
+          <video id="camera-feed" autoplay playsinline muted></video>
+          <div class="camera-fallback" id="camera-fallback" hidden>
+            camera permission unavailable
+          </div>
+          <div class="scan-overlay" aria-hidden="true">
+            <div class="scan-line"></div>
+            <span class="corner corner-tl"></span>
+            <span class="corner corner-tr"></span>
+            <span class="corner corner-bl"></span>
+            <span class="corner corner-br"></span>
+          </div>
+        </div>
+        <p class="scan-caption" id="scan-caption">Awaiting camera signal...</p>
+      </section>
+
+      <section class="screen screen-result" data-screen="result" aria-live="polite" aria-labelledby="angel-name">
+        <pre class="result-wing result-wing-left" id="result-wing-left" aria-hidden="true"></pre>
+        <article class="result-card">
+          <p class="technical-label result-kicker">spectral analysis complete</p>
+          <h2 id="angel-name">The Threshold Angel</h2>
+          <p class="technical-label angel-index" id="angel-index">aura type 01 of 08</p>
+
+          <div class="reading-block">
+            <p class="technical-label result-section-label">aura reading</p>
+            <p id="aura-reading"></p>
+          </div>
+
+          <div class="result-columns">
+            <div>
+              <p class="technical-label result-section-label">your sigil</p>
+              <pre class="sigil" id="angel-sigil"></pre>
+            </div>
+            <div>
+              <p class="technical-label result-section-label">prophecy</p>
+              <p id="prophecy"></p>
+            </div>
+          </div>
+
+          <div class="frequency-block">
+            <p class="technical-label result-section-label">your frequency</p>
+            <div class="frequency-row">
+              <span class="note" aria-hidden="true">&#9834;</span>
+              <div>
+                <p id="frequency-hz"></p>
+                <p id="frequency-name"></p>
+              </div>
+            </div>
+          </div>
+          <button class="back-start-button" type="button" data-action="back-start">&larr; back to start</button>
+        </article>
+        <pre class="result-wing result-wing-right" id="result-wing-right" aria-hidden="true"></pre>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
