@@ -1,6 +1,7 @@
 (function () {
   var screens = Array.prototype.slice.call(document.querySelectorAll(".screen"));
   var startButton = document.querySelector('[data-action="start"]');
+  var backStartButton = document.querySelector('[data-action="back-start"]');
   var form = document.getElementById("diagnostic-form");
   var zodiacSelect = document.getElementById("zodiac-sign");
   var scanScreen = document.querySelector('[data-screen="scan"]');
@@ -583,6 +584,14 @@
 
   startButton.addEventListener("click", function () {
     showScreen("form");
+  });
+
+  backStartButton.addEventListener("click", function () {
+    clearTimeout(scanTimer);
+    stopCaptionLoop();
+    stopCamera();
+    scanScreen.classList.remove("is-scanning");
+    showScreen("landing");
   });
 
   zodiacSelect.addEventListener("change", function () {

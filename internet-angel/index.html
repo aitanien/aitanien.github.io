@@ -64,7 +64,6 @@
 
       <section class="screen screen-scan" data-screen="scan" aria-labelledby="scan-title">
         <h2 id="scan-title" class="visually-hidden">Face scan</h2>
-        <div class="scan-beam" aria-hidden="true"></div>
         <div class="camera-frame">
           <video id="camera-feed" autoplay playsinline muted></video>
           <div class="camera-fallback" id="camera-fallback" hidden>
@@ -114,6 +113,7 @@
               </div>
             </div>
           </div>
+          <button class="back-start-button" type="button" data-action="back-start">&larr; back to start</button>
         </article>
         <pre class="result-wing result-wing-right" id="result-wing-right" aria-hidden="true"></pre>
       </section>

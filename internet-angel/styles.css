@@ -305,53 +305,16 @@ h2 {
   justify-content: center;
 }
 
-.scan-beam {
-  animation: beamPulse 2.4s ease-in-out infinite;
-  animation-play-state: paused;
-  background: var(--scan);
-  box-shadow: 0 0 8px var(--scan), 0 0 20px rgba(93, 255, 248, 0.75);
-  height: 2px;
-  left: 50%;
-  position: absolute;
-  top: calc(50% - 170px);
-  transform: translateX(-50%);
-  width: var(--center-width);
-}
-
-.screen-scan.is-scanning .scan-beam {
-  animation-play-state: running;
-}
-
-.scan-beam::before,
-.scan-beam::after {
-  background: var(--scan);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--scan), 0 0 18px var(--scan), 0 0 28px var(--scan);
-  content: "";
-  height: 14px;
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 14px;
-}
-
-.scan-beam::before {
-  left: -7px;
-}
-
-.scan-beam::after {
-  right: -7px;
-}
-
 .camera-frame {
+  --scan-frame-height: 420px;
   background: #d8fbfb;
   box-shadow: 0 0 0 rgba(93, 255, 248, 0);
-  height: 226px;
+  height: var(--scan-frame-height);
   margin-top: -2px;
   overflow: hidden;
   position: relative;
   transition: box-shadow 520ms ease, filter 520ms ease;
-  width: var(--center-width);
+  width: min(720px, calc(100vw - 48px));
 }
 
 .screen-scan.is-scanning .camera-frame {
@@ -567,6 +530,26 @@ h2 {
   margin: 0;
 }
 
+.back-start-button {
+  appearance: none;
+  background: transparent;
+  border: 0;
+  color: inherit;
+  display: block;
+  font-family: "Panchi Mono", "Courier New", monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 40px auto 0;
+  padding: 0;
+  text-align: center;
+}
+
+.back-start-button:hover,
+.back-start-button:focus-visible {
+  opacity: 0.7;
+  outline: none;
+}
+
 .result-wing {
   animation: wingBreath 6.8s ease-in-out infinite;
   color: inherit;
@@ -602,17 +585,7 @@ h2 {
     transform: translateY(0);
   }
   100% {
-    transform: translateY(226px);
-  }
-}
-
-@keyframes beamPulse {
-  0%,
-  100% {
-    opacity: 0.62;
-  }
-  50% {
-    opacity: 1;
+    transform: translateY(var(--scan-frame-height));
   }
 }
 
@@ -736,13 +709,8 @@ h2 {
   }
 
   .camera-frame {
-    height: calc((100vw - 48px) * 0.61);
+    --scan-frame-height: calc((100vw - 48px) * 0.75);
     width: 100%;
-  }
-
-  .scan-beam {
-    top: calc(50% - 170px);
-    width: calc(100% - 48px);
   }
 
   .screen-result {
